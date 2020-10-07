@@ -1,0 +1,71 @@
+
+<div data-name="comentarios" class="page">
+
+    <div class="preload">
+        <div class="loader">
+          <img class="imageLoad" src="img/load.svg" alt="">
+        </div>
+    </div>
+
+    <div class="navbar navbar-conf-comentario display-none">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner menu">
+            <div class="title-legenda left bg-black">
+                <a href="#" class="link back-edit-coment">                   
+                    <i class="f7-icons">multiply</i>              
+                </a>
+            </div>
+            <div class="title-legenda right">
+                <i class="f7-icons" id="editar-comentario">pencil_ellipsis_rectangle</i>&nbsp;&nbsp;&nbsp;
+                <i class="f7-icons" id="excluir-comentario" onclick="excluirComentario();">trash</i>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar navbar-edit-comentario display-none">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner menu">
+            <div class="title-legenda left bg-black">
+                <a href="#" class="link back-edit-coment">                   
+                    <i class="f7-icons">multiply</i>              
+                </a>
+                &nbsp; <div class="followUser">Editar comentário</div>
+            </div>
+            <div class="title-legenda right">
+                <a class="text-color-green" id="btn-confirm-comentario" onclick="editarComentario();" href="#"><i class="f7-icons">checkmark_alt</i></a>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+    
+    <div class="navbar navbar-comentario">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner menu">
+        <div class="title left bg-black">
+            <a href="" class="link back back-coment">                   
+                <i class="f7-icons">arrow_left</i>              
+            </a>
+            &nbsp; Comentários
+        </div>
+        </div>
+    </div>
+    <!-- Adicionando conteudo a página -->
+    <div class="toolbar messagebar">
+        <div class="toolbar-inner">
+            <div class="messagebar-area">
+            <textarea class="resizable" id="comentario" placeholder="Adicione um comentário..."></textarea>
+            </div>
+            <a class="link send-link public-coment" href="#">Publicar</a>
+        </div>
+    </div>
+    <div class="page-content">
+
+        <div class="block">
+            <div class="list media-list">
+                <ul>
+                    <div id="verComentario"></div>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
