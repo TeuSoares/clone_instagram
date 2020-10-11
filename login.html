@@ -4,112 +4,73 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <title>Instagram 2.0</title>
-    <!-- Path to Framework7 Library Bundle CSS -->
-    <link rel="stylesheet" href="css/framework7.bundle.min.css">
-    <link rel="stylesheet" href="css/style.css">    
-     <link rel="stylesheet" href="css/framework7-icons.css">
-    <!-- Path to your custom app styles-->
-   
+    <title>Projeto Integrador</title> 
+    <link rel="stylesheet" href="css/framework7.bundle.min.css">   
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/framework7-icons.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body class="bg">
-        <!-- App root element -->
-        <div id="app">
-            <div class="view view-main">
-              <div class="page login" data-name="login">
 
-                <div class="navbar theme-dark">
-                  <div class="navbar-bg"></div>
-                  <div class="navbar-inner">
-                    <div class="title text-center"><i class="f7-icons">camera_fill</i>&nbsp; LifeTerest</div>
-                  </div>
+    <div id="app">
+        <div class="view view-main">                   
+            <div data-name="login" class="page login">    
+                
+                <div class="login-screen">
+                    <div class="view">
+                        <div class="page">
+                            <div class="page-content login-screen-content login">
+                                <div class="login-screen-title">LOGO</div>
+                                <form id="Formlogin" method="POST">
+                                    <div class="list">
+                                        <ul>
+                                        <li class="item-content item-input">
+                                            <div class="item-inner">
+                                            <div class="item-title item-label">Usuário</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="email" id="email" placeholder="E-mail ou Usuário">
+                                            </div>
+                                            </div>
+                                        </li>
+                                        <li class="item-content item-input">
+                                            <div class="item-inner">
+                                            <div class="item-title item-label">Senha</div>
+                                            <div class="item-input-wrap display-flex tamanho-icon">
+                                                <input type="password" name="senha" id="senha" placeholder="******">
+                                                <i class="f7-icons icon-visi">eye</i>
+                                                <i class="f7-icons icon-hidden">eye_slash</i>
+                                            </div>
+                                            </div>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                    <div class="list">
+                                        <ul>
+                                            <li class="block">
+                                                <button class="col button button-fill button-noturno bg-color-black" id="entrar">
+                                                    Entrar <i class="icon f7-icons">square_arrow_right</i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <div class="block-footer">
+                                            <p>Não possui uma conta?</p>
+                                            <p><a href="/cadastro-usuario/" class="list-button text-center">Cadastre-se<i class="icon f7-icons">arrow_right_square_fill</i></a></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div> <!-- FIM DATA-NAME -->
+        </div> <!-- FIM VIEW_MAIN -->
+    </div> <!-- FIM APP -->
 
-                <div class="page-content">
-                  <div class="block">             
-                    <form class="list" id="Formlogin" method="POST">
-                      <ul>
-                        <li>
-                          <div class="item-content item-input">
-                            <div class="item-inner">
-                              <div class="item-title item-label">Usuário</div>
-                              <div class="item-input-wrap">
-                                <input type="text" name="email" id="email" placeholder="E-mail ou Usuário">
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="item-content item-input">
-                            <div class="item-inner">
-                              <div class="item-title item-label">Senha</div>
-                              <div class="item-input-wrap">
-                                <input type="password" name="senha" id="senha" placeholder="******">
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>              
+<!-- area javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/framework7.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script src="cordova.js"></script>
 
-                      <button class="button-round button button-fill button-large button-noturno bg-color-black" id="entrar">
-                        Entrar <i class="f7-icons">arrow_right</i>
-                      </button>
-
-                    </form>
-
-                    <div class="list">
-                      <p class="text-center">Utilize o formulário abaixo para criar uma conta?</p>   
-                                  
-                      
-                      <form class="list" id="Formcadastro">
-                      <ul>
-                        <li>
-                          <div class="item-content item-input">
-                            <div class="item-inner">
-                              <div class="item-title item-label">Usuário</div>
-                              <div class="item-input-wrap">
-                                <input type="email" name="nome_c" id="nome_c" placeholder="nomeusuario">
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="item-content item-input">
-                            <div class="item-inner">
-                              <div class="item-title item-label">E-mail</div>
-                              <div class="item-input-wrap">
-                                <input type="email" name="email_c" id="email_c" placeholder="email@gmail.com">
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="item-content item-input">
-                            <div class="item-inner">
-                              <div class="item-title item-label">Senha</div>
-                              <div class="item-input-wrap">
-                                <input type="password" name="senha_c" id="senha_c" placeholder="******">
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-
-                        <button class="button-round button button-fill button-large button-noturno bg-color-black" id="cadastrar">
-                          Cadastrar <i class="f7-icons">arrow_right</i>
-                        </button>
-                      </ul> 
-                      </form>
-                  
-                    </div> <!-- FIM LIST -->
-                  </div><!-- FIM BLOCK -->
-                </div><!-- FIM PAGE-CONTENT -->
-              </div><!-- FIM PAGE -->
-            </div>
-        </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/framework7.bundle.min.js"></script>
-    <script src="js/app.js"></script>
-    <script src="cordova.js"></script>
- </body>
- </html>
+</body>
+</html>

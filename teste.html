@@ -4,113 +4,74 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <title>Instagram 2.0</title>
-    <!-- Path to Framework7 Library Bundle CSS -->
-    <link rel="stylesheet" href="css/framework7.bundle.min.css">
-    <link rel="stylesheet" href="css/style.css">    
-     <link rel="stylesheet" href="css/framework7-icons.css">
-    <!-- Path to your custom app styles-->
-   
+    <title>Projeto Integrador</title> 
+    <link rel="stylesheet" href="css/framework7.bundle.min.css">   
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/framework7-icons.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
+  <body class="bg">
 
-  <body>
-        <!-- App root element -->
-        <div id="app">
-            <div class="view view-main">
-                <div data-name="teste" class="page">
-                  
-    
-                  
-                    <div class="navbar">
-                      <div class="navbar-bg"></div>
-                      <div class="navbar-inner menu">
-                      <div class="title left bg-black">
-                          <a href="" class="link back back-like">                   
-                              <i class="f7-icons">arrow_left</i>              
-                          </a>
-                          &nbsp; Direct
-                      </div>
-                      </div>
+    <div id="app">
+        <div class="view view-main">                   
+            <div data-name="teste" class="page login">    
+                
+                <div class="login-screen">
+                    <div class="view">
+                        <div class="page">
+                            <div class="page-content login-screen-content login">
+                                <div class="login-screen-title">LOGO</div>
+                                <form id="Formlogin" method="POST">
+                                    <div class="list">
+                                        <ul>
+                                        <li class="item-content item-input">
+                                            <div class="item-inner">
+                                            <div class="item-title item-label">Usuário</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="email" id="email" placeholder="E-mail ou Usuário">
+                                            </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content item-input">
+                                              <div class="item-inner">
+                                              <div class="item-title item-label">Cidade/UF</div>
+                                              <div class="item-input-wrap">
+                                                  <input type="text" name="cidade" id="cidade_autocomplete" placeholder="Cidade/UF">
+                                              </div>
+                                              </div>
+                                            </div>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                    <div class="list">
+                                        <ul>
+                                            <li class="block">
+                                                <button class="col button button-fill color-black" id="entrar">
+                                                    Entrar <i class="icon f7-icons">square_arrow_right</i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <div class="block-footer">
+                                            <p>Não possui uma conta?</p>
+                                            <p><a href="/cadastro-usuario/" class="list-button text-center">Cadastre-se<i class="icon f7-icons">arrow_right_square_fill</i></a></p>
+                                            <input type="text" name="telefone" data-mask="(00) 0000-0000" data-mask-selectonfocus="true" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                        <!-- Adicionando conteudo a página -->
-                    <div class="subnavbar">
-                        <!-- Searchbar with auto init -->
-                        <form class="searchbar">
-                            <div class="searchbar-inner">
-                                <div class="searchbar-input-wrap">
-                                    <input type="search" placeholder="Pesquisar">
-                                    <i class="searchbar-icon"></i>
-                                    <span class="input-clear-button"></span>
-                                </div>
-                                <span class="searchbar-disable-button if-not-aurora">Cancel</span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="page-content">
-                        <!-- Searchbar backdrop -->
-                        <div class="searchbar-backdrop"></div>
-                        <!-- hide-on-search element -->
-                        <div class="block searchbar-hide-on-search">
-                            <strong><p class="p-chat">Mensagens recentes</p></strong>
-                        </div>
-                        <!-- search target list -->
-                        <div class="list searchbar-found">
-                            <ul class=>
+                </div>
+            </div> <!-- FIM DATA-NAME -->
+        </div> <!-- FIM VIEW_MAIN -->
+    </div> <!-- FIM APP -->
 
-                            </ul>
-                        </div>
+<!-- area javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/framework7.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script src="cordova.js"></script>
 
-                        <div class='row'>
-                            <button class='col button button-small button-outline button-noturno text-color-black color-black seguindo'>Seguindo</button>
-                            <button class='col button button-small button-outline button-noturno text-color-black color-black mensagem'>mensagem</button>
-                        </div>
-                        <!-- Nothing found message -->
-                        <div class="block searchbar-not-found">
-                            <div class="block-inner">Nothing found</div>
-                        </div>
-
-                        <a class="button button-raised open-full" href="#">Full-layout notification</a>
-                        <br>
-                        <input type="text" onkeyup="busca()">
-
-                        <div class="display-flex">
-                            <span class="tw-heart-box">
-                                <input type="checkbox" name="name" value="">
-                                <span class="tw-heart"></span>
-                            </span>
-                            
-                            <a href="/comentarios/" class="btn-comentario"> 
-                                <i class="f7-icons comentario">chat_bubble</i> 
-                            </a>
-                        </div>
-
-                        <div>teste</div>
-
-                        <div class="main">
-                            <div class="content">
-                                Conteúdo aqui
-                            </div>
-                        
-                            <div id="footer">
-                                <span>Footer</span> 
-                            </div>
-                        </div>
-
-
-                        
-
-                    </div> <!-- FIM PAGE-CONTENT -->
-                  
-
-            </div>
-        </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/framework7.bundle.min.js"></script>
-    <script src="js/app.js"></script>
-    <script src="cordova.js"></script>
- </body>
- </html>
- <!--
-   REFERENCIAS FRAMEWORK 7
-  https://framework7.io/docs/cards.html -->
+</body>
+</html>

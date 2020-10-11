@@ -246,6 +246,19 @@
   text-align: center!important;
 }
 
+.camera2{
+  width: 110px;
+  height: 110px;
+  border: 4px solid #000;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.camera2 img{
+  width: 100%;
+  height: auto;
+}
+
 .icon-chat{
   width: 60px;
   height: 60px;
@@ -447,7 +460,74 @@
     width:100%;
     margin-top: 10px;
 }
-
+.f7-icons.login{
+	font-size:3rem;
+} 
+.login .icon-visi{
+    display: none;
+}
+.tamanho-icon .f7-icons{
+    margin-top: 10px;
+    font-size: 1.4em;
+} 
+.login-screen{
+  display: block!important;
+  transform: none!important;
+}
+.login-screen-content .block, .login-screen-content .block-footer, .login-screen-content .block-header, 
+.login-screen-content .list, .login-screen-content .login-screen-title, .login-screen-page .block, 
+.login-screen-page .block-footer, .login-screen-page .block-header, .login-screen-page .list, 
+.login-screen-page .login-screen-title {
+  max-width: 100%;
+}
+.bg-dark{
+  background-color: #000000;
+}
+.login .page-content{
+  overflow: visible;
+}
+.sair a {
+  padding-left: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
+  padding-right: calc(var(--f7-list-chevron-icon-area) + var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-right));
+}
+.sair a {
+  font-size: 16px;
+  transition-duration: .3s;
+  transition-property: background-color;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  height: var(--f7-list-item-min-height);
+  font-weight: bold;
+}
+.media-list .item-media, li.media-item .item-media {
+  align-self: center!important;
+}
+.notaAV{
+  font-size: 3.5em;
+  font-weight: bold;
+}
+.starAV{
+  font-size: 1em!important;
+}
+.notaFinal .list{
+  margin: 0!important;
+}
+.number_star{
+  font-size: 1em;
+  font-weight: bold;
+}
+.trabalhos .list-button{
+  padding: 2px!important;
+}
 
 @media screen and (max-width:385px){
   .imagemPerfil {
