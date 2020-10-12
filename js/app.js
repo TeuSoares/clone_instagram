@@ -76,7 +76,7 @@ var app = new Framework7({
       },
       {
         path: '/update/',
-        url: 'update_usuario.html?b=3',
+        url: 'update_usuario.html?b=4',
         on:{
           pageInit:function(){
             pageUpdate();
@@ -1288,6 +1288,20 @@ function pagePerfil(){
         localStorage.setItem('id_public', id); // armazena o ID no ambiente local
       });
       escuroON();
+
+      if(dados[4]!=""){
+        $(".info-perfil,#avaliacao,.atividade-perfil").show();
+      }else{
+        $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+      }
+
+      $(".link-site").on("click", function(){
+        window.open('https://www.'+dados[5]+'', '_blank');
+      });
+
+      if(dados[5] == "" || dados[6] == "" || dados[7] == "" || dados[8] == "" || dados[9] == ""){
+        $(".endereco,.site,.telefone").hide();
+      }
   
     });
   
@@ -1371,23 +1385,47 @@ function pagePerfil2(){
       pagePerfil2();
     });
 
-    if(dados[4] !="" && dados[5] !=""){
+    if(dados[4] !="" && dados[5] !="" && dados[6] !=""){
       $("#editarPeril").hide();
       $(".seguirP").hide();
       $(".seguindo").show();
       $(".mensagem").show();
+      $(".info-perfil,#avaliacao").show();
+      $(".atividade-perfil").hide();
+    }else if(dados[4] !="" && dados[5]){
+      $("#editarPeril").hide();
+      $(".seguirP").hide();
+      $(".seguindo").show();
+      $(".mensagem").show();
+      $(".info-perfil,#avaliacao").hide();
+      $(".atividade-perfil").hide();
+    }else if(v_id == v_perfil && dados[6] !=""){
+      $("#editarPeril").show();
+      $(".seguirP").hide();
+      $(".seguindo").hide();
+      $(".mensagem").hide();
+      $(".info-perfil,#avaliacao,.atividade-perfil").show();
+      $(".info-perfil,.link-avaliacao,.atividade-perfil").removeClass("col-50");
+      $(".info-perfil,.link-avaliacao,.atividade-perfil").addClass("col-33");
     }else if(v_id == v_perfil){
       $("#editarPeril").show();
       $(".seguirP").hide();
       $(".seguindo").hide();
       $(".mensagem").hide();
+      $(".info-perfil,#avaliacao,.atividade-perfil").hide();
     }else{
       $("#editarPeril").hide();
       $(".seguirP").show();
       $(".seguindo").hide();
       $(".mensagem").show();
+      $(".info-perfil,#avaliacao,.atividade-perfil").hide();
     }
+
     escuroON();
+
+    $(".link-site").on("click", function(){
+      window.open('https://www.'+dados[7]+'', '_blank');
+    });
 
   });
   escuroON();
@@ -1512,30 +1550,6 @@ function verSeguidores2(){
 function pageUpdate(){
   online();
 
-  
-  var listaCidades = "";
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/lista_de_cidades_projeto.php', { }, function (resposta) {
-      listaCidades = (resposta).split(',');
-  })
-  
-  var autocompleteDropdownSimple = app.autocomplete.create({
-      inputEl: '#cidade_autocomplete',
-      openIn: 'dropdown',
-      source: function (query, render) {
-        var results = [];
-        if (query.length === 0) {
-          render(results);
-          return;
-        }
-        // Find matched items
-        for (var i = 0; i < listaCidades.length; i++) {
-          if (listaCidades[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(listaCidades[i]);
-        }
-        // Render items by passing array with result items
-        render(results);
-      }
-  });
-
     // Faz os carregamentos dos dados para edição
     var v_id = localStorage.getItem('id_usuario');
     // app.dialog.alert("Formulario - Recuperei: " + v_id);
@@ -1549,21 +1563,26 @@ function pageUpdate(){
       $('#imagemUser').attr('src',dados[4]);
       $("#nomeFoto").val(dados[5]);
       $("#celular_u").val(dados[6]);
-      $("#telefone_u").val(dados[7]);
-      $("#rv").val(dados[8]);
-      $("#bairro").val(dados[9]);
-      $("#numero_casa").val(dados[10]);
-      $("#cidade_autocomplete").val(dados[11]);
-      $("#site").val(dados[12]);
-      escuroON();
 
+      if(dados[13] !=""){
+        $("#telefone_u").val(dados[7]);
+        $("#rv").val(dados[8]);
+        $("#bairro").val(dados[9]);
+        $("#numero_casa").val(dados[10]);
+        $("#cidade_autocomplete").val(dados[11]);
+        $("#site").val(dados[12]);
+      }else{
+        $(".telefone,.rua,.bairro,.cidade,.site,.numero").hide();
+      }
+
+      escuroON();
     });  
     
     // Função do recurso de câmera
     $(document).ready(function(){
 
-      $("#celular_u").mask("(00) 0000-0000");
-      $("#telefone_u").mask("(00) 0000-0000");
+      $("#celular_u").mask("(00) 00000-0000");
+      $("#telefone_u").mask("(00) 00000-0000");
 
       $('#fotoUser').on('click',cameraApp);
   
@@ -1625,11 +1644,11 @@ function pageUpdate(){
       var email_c = $("#email").val();
       var celular = $("#celular_u").val();
       var telefone = $("#telefone_u").val();
-      var item = $("#cidade_autocomplete").val();
-      var rv = $("#rv").val();
-      var bairro = $("#bairro").val();
-      var site = $("#site").val();
-      var numero = $("#numero").val();
+      var item2 = $("#cidade_autocomplete").val();
+      var rv2 = $("#rv").val();
+      var bairro2 = $("#bairro").val();
+      var site2 = $("#site").val();
+      var numero2 = $("#numero_casa").val();
       var fotoPublic = localStorage.getItem('foto_perfil');
       var nomeFoto = localStorage.getItem('nomeFoto_perfil');
 
@@ -1637,7 +1656,11 @@ function pageUpdate(){
         var nomeFoto = $("#nomeFoto").val();
       }
 
-      // alert(nomeFoto);
+      // alert(telefone_u+"<br>"+numero2+"<br>"+item2)
+
+      app.request.post('https://www.limeiraweb.com.br/mateus/php/update_perfil_profissional.php', {id_usuario:v_id,telefone_u:telefone,cidade_autocomplete:item2,rv:rv2,bairro:bairro2,site:site2,numero_casa:numero2}, function(resposta){
+        // $("#verSql").html(resposta);
+      });  
 
       if(nome_c.trim() == ""){
         app.dialog.alert("O campo usuário não pode ficar vazio","");
@@ -1716,18 +1739,12 @@ function pageUpdate(){
             params.value4 = bio;
             params.value5 = id_usuario;
             params.value6 = celular;
-            params.value7 = telefone;
-            params.value8 = bairro;
-            params.value9 = rv;
-            params.value10 = item;
-            params.value11 = numero;
-            params.value12 = site;
     
             options.params = params;
             options.chunkedMode = false;
     
             var ft = new FileTransfer();
-            ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/update_perfil_profissional.php"),function(){
+            ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insere_perfil.php"),function(){
 
               setTimeout(function () {
                 app.dialog.alert("Alteração realizada com sucesso!!","");
@@ -1763,18 +1780,12 @@ function pageUpdate(){
         params.value4 = bio;
         params.value5 = id_usuario;
         params.value6 = celular;
-        params.value7 = telefone;
-        params.value8 = bairro;
-        params.value9 = rv;
-        params.value10 = item;
-        params.value11 = numero;
-        params.value12 = site;
 
         options.params = params;
         options.chunkedMode = false;
 
         var ft = new FileTransfer();
-        ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/update_perfil_profissional.php"),function(){
+        ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insere_perfil.php"),function(){
           setTimeout(function () {
             app.dialog.alert("Alteração realizada com sucesso!!","");
             app.dialog.close();
@@ -1799,6 +1810,29 @@ function pageUpdate(){
     }); 
 
 
+    });
+
+    var listaCidades = "";
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/lista_de_cidades_projeto.php', { }, function (resposta) {
+        listaCidades = (resposta).split(',');
+    })
+    
+    var autocompleteDropdownSimple = app.autocomplete.create({
+        inputEl: '#cidade_autocomplete',
+        openIn: 'dropdown',
+        source: function (query, render) {
+          var results = [];
+          if (query.length === 0) {
+            render(results);
+            return;
+          }
+          // Find matched items
+          for (var i = 0; i < listaCidades.length; i++) {
+            if (listaCidades[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(listaCidades[i]);
+          }
+          // Render items by passing array with result items
+          render(results);
+        }
     });
 
 }

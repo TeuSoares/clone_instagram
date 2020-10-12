@@ -528,6 +528,9 @@
 .trabalhos .list-button{
   padding: 2px!important;
 }
+.form-update .block,.form-update .page-content,.form-update .list,.form-update .list ul,.form-update .list li,.form-update .list .item-title,.form-update .list .item-inner{
+  position: relative!important;
+}
 
 @media screen and (max-width:385px){
   .imagemPerfil {
