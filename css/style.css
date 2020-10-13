@@ -531,6 +531,29 @@
 .form-update .block,.form-update .page-content,.form-update .list,.form-update .list ul,.form-update .list li,.form-update .list .item-title,.form-update .list .item-inner{
   position: relative!important;
 }
+.title-coment{
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.estrelas input[type=radio] {
+  display: none;
+}
+.estrelas label i.fa:before {
+  content:'\f005';
+  color: #FC0;
+}
+.estrelas input[type=radio]:checked ~ label i.fa:before {
+  color: #CCC;
+}
+
+.estrelas .fa{
+  font-size: 2.5em; 
+  margin-top: 8px;
+}
+.starAVMin{
+  font-size: .5em!important;
+}
 
 @media screen and (max-width:385px){
   .imagemPerfil {

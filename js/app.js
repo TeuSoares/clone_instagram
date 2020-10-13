@@ -172,16 +172,18 @@ var app = new Framework7({
         url: 'perfil-profissional.html?a=5',
         on:{
           pageInit:function(){
-            
+            escuroON();
           },
         }, 
       },
       {
         path: '/avaliacao/',
-        url: 'avaliacao.html?a=5',
+        url: 'avaliacao.html?a=8',
         on:{
           pageInit:function(){
             escuroON();
+            verFeedback();
+            avaliacao();
           },
         }, 
       },
@@ -200,6 +202,16 @@ var app = new Framework7({
         on:{
           pageInit:function(){
             escuroON();
+          },
+        }, 
+      },
+      {
+        path: '/feedback-perfil/',
+        url: 'inserirFeedback.html?a=7',
+        on:{
+          pageInit:function(){
+            escuroON();
+            insertFeedback();
           },
         }, 
       },
@@ -1427,6 +1439,10 @@ function pagePerfil2(){
       window.open('https://www.'+dados[7]+'', '_blank');
     });
 
+    if(dados[7] == "" || dados[8] == "" || dados[9] == "" || dados[10] == "" || dados[11] == ""){
+      $(".endereco,.site,.telefone").hide();
+    }
+
   });
   escuroON();
 });
@@ -1564,15 +1580,15 @@ function pageUpdate(){
       $("#nomeFoto").val(dados[5]);
       $("#celular_u").val(dados[6]);
 
-      if(dados[13] !=""){
+      if(dados[13] == undefined || dados[13] == "" || dados[13] == null){
+        $(".telefone,.rua,.bairro,.cidade,.site,.numero").hide();
+      }else{
         $("#telefone_u").val(dados[7]);
         $("#rv").val(dados[8]);
         $("#bairro").val(dados[9]);
         $("#numero_casa").val(dados[10]);
         $("#cidade_autocomplete").val(dados[11]);
         $("#site").val(dados[12]);
-      }else{
-        $(".telefone,.rua,.bairro,.cidade,.site,.numero").hide();
       }
 
       escuroON();
@@ -1996,6 +2012,7 @@ function categoria(){
     app.request.post('https://www.limeiraweb.com.br/mateus/php/lista_de_categorias.php', {}, function(resposta){
     
       $("#list_categorias").html(resposta);
+      closePreLoader();
 
       $(document).on("click", ".select_categoria", function(){
         var getCategoria = $(this).attr('data-categoria'); // recupera o ID
@@ -2031,6 +2048,455 @@ function categoria(){
 
     escuroON();
   }); // FIM READY
+}
+
+function insertFeedback(){
+  var v_perfil = localStorage.getItem('id_perfil');
+  var v_user = localStorage.getItem('id_usuario');
+  
+  $("#inserir-feedback").on("click", function(){
+
+    app.dialog.preloader('Publicando...');
+
+    var vComentario = $("#feedback").val();
+
+    if(vComentario.trim() == ""){
+      app.dialog.alert("O campo comentário não pode ficar vazio","AVISO");
+      return false;
+    }
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirFeedback.php', {id_usuario:v_user,id_perfil:v_perfil,feedback:vComentario}, function(resposta){
+
+      setTimeout(function () {
+        app.dialog.close();
+        // $("#feedback").val("");
+        app.views.current.router.back();
+        verFeedback();
+      }, 500);
+
+    });
+
+  });
+}
+
+function verFeedback(){
+
+  $(document).ready(function(){
+    var v_perfil = localStorage.getItem('id_perfil');
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/verFeedback.php', {id_perfil:v_perfil}, function(resposta){
+      $("#verFeedback").html(resposta);  
+      escuroON();
+      closePreLoader();
+    });
+
+    escuroON();
+
+  });
+
+}
+
+function avaliacao(){
+  $(document).ready(function(){
+
+    var v_perfil = localStorage.getItem('id_perfil');
+    var v_user = localStorage.getItem('id_usuario');
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/feedback.php', {id_perfil:v_perfil,id_usuario:v_user}, function(resposta){
+      dados = (resposta).split("|");
+      closePreLoader();
+
+      if(dados[0] !="" && dados[1] !=""){
+        app.dialog.close();
+      }else if(v_user == v_perfil){
+        app.dialog.close();
+      }else{
+        setTimeout(function(){
+          app.dialog.alert(
+            '<div class="estrelas text-align-center">'+
+              '<input type="radio" id="cm_star-empty" name="fb" value="" checked/>'+
+              '<label for="cm_star-1"><i class="fa" onclick="setStar1();"></i></label>'+
+              '<input type="radio" id="cm_star-1" class="avaliar" name="fb" value="1"/>'+
+              '<label for="cm_star-2"><i class="fa" onclick="setStar2();"></i></label>'+
+              '<input type="radio" id="cm_star-2" class="avaliar" name="fb" value="2"/>'+
+              '<label for="cm_star-3"><i class="fa" onclick="setStar3();"></i></label>'+
+              '<input type="radio" id="cm_star-3" class="avaliar" name="fb" value="3"/>'+
+              '<label for="cm_star-4"><i class="fa" onclick="setStar4();"></i></label>'+
+              '<input type="radio" id="cm_star-4" class="avaliar" name="fb" value="4"/>'+
+              '<label for="cm_star-5"><i class="fa" onclick="setStar5();"></i></label>'+
+              '<input type="radio" id="cm_star-5" class="avaliar" name="fb" value="5"/>'+
+            '</div>','<div class="text-align-center">Avalie esse profissional</div>');
+        },1000);
+      }
+
+      $(".notaAV").html(dados[2]);
+
+      if(dados[3] == undefined || dados[3] == "" || dados[3] == 0){
+        result_star5 = "";
+        result_star4 = ""; 
+        result_star3 = "";  
+        result_star2 = "";
+        result_star1 = "";
+        $(".TotalAV").html("0 Avaliações");
+      }else{
+        $(".TotalAV").html(dados[3]+" Avaliações");
+        conta5 = 100 * dados[9];
+        result_star5 = conta5 / dados[3];
+        result_star5 = result_star5.toFixed(0);
+  
+        conta4 = 100 * dados[4];
+        result_star4 = conta4 / dados[3];
+        result_star4 = result_star4.toFixed(0);
+  
+        conta3 = 100 * dados[8];
+        result_star3 = conta3 / dados[3];
+        result_star3 = result_star3.toFixed(0);
+  
+        conta2 = 100 * dados[7];
+        result_star2 = conta2 / dados[3];
+        result_star2 = result_star2.toFixed(0);
+  
+        conta1 = 100 * dados[6];
+        result_star1 = conta1 / dados[3];
+        result_star1 = result_star1.toFixed(0);
+      }
+
+      if(result_star5 == 0 || result_star5 == ""){
+        $('.star_5').attr('data-progress','0');
+        $('.result_star5 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        $('.porce_star5').html('0%');
+      }else{
+        $('.star_5').attr('data-progress',result_star5);
+        if(result_star5 == 0){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        }else if(result_star5 > 0 && result_star5 < 10){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-95%, 0px, 0px)');
+        }else if(result_star5 >=10 && result_star5 < 15){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-90%, 0px, 0px)');
+        }else if(result_star5 >=15 && result_star5 < 20){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-85%, 0px, 0px)');
+        }else if(result_star5 >=20 && result_star5 < 25){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-80%, 0px, 0px)');
+        }else if(result_star5 >=25 && result_star5 < 30){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-75%, 0px, 0px)');
+        }else if(result_star5 >=30 && result_star5 < 35){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-70%, 0px, 0px)');
+        }else if(result_star5 >=35 && result_star5 < 40){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-65%, 0px, 0px)');
+        }else if(result_star5 >=40 && result_star5 < 45){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-60%, 0px, 0px)');
+        }else if(result_star5 >=45 && result_star5 < 50){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-55%, 0px, 0px)');
+        }else if(result_star5 >=50 && result_star5 < 55){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-50%, 0px, 0px)');
+        }else if(result_star5 >=55 && result_star5 < 60){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-45%, 0px, 0px)');
+        }else if(result_star5 >=60 && result_star5 < 65){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-40%, 0px, 0px)');
+        }else if(result_star5 >=65 && result_star5 < 70){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-35%, 0px, 0px)');
+        }else if(result_star5 >=70 && result_star5 < 75){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-30%, 0px, 0px)');
+        }else if(result_star5 >=75 && result_star5 < 80){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-25%, 0px, 0px)');
+        }else if(result_star5 >=80 && result_star5 < 85){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-20%, 0px, 0px)');
+        }else if(result_star5 >=85 && result_star5 < 90){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-15%, 0px, 0px)');
+        }else if(result_star5 >=90 && result_star5 < 95){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-10%, 0px, 0px)');
+        }else if(result_star5 >=95 && result_star5 < 100){
+          $('.result_star5 .progressbar span').css('transform','translate3d(-5%, 0px, 0px)');
+        }else if(result_star5 == 100){
+          $('.result_star5 .progressbar span').css('transform','translate3d(0%, 0px, 0px)');
+        }
+        $('.porce_star5').html(result_star5+'%');
+      }
+      
+      if(result_star4 == 0 || result_star4 == ""){
+        $('.star_4').attr('data-progress','0');
+        $('.result_star4 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        $('.porce_star4').html('0%');
+      }else{
+        $('.star_4').attr('data-progress',result_star4);
+        if(result_star4 == 0){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        }else if(result_star4 > 0 && result_star4 < 10){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-95%, 0px, 0px)');
+        }else if(result_star4 >=10 && result_star4 < 15){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-90%, 0px, 0px)');
+        }else if(result_star4 >=15 && result_star4 < 20){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-85%, 0px, 0px)');
+        }else if(result_star4 >=20 && result_star4 < 25){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-80%, 0px, 0px)');
+        }else if(result_star4 >=25 && result_star4 < 30){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-75%, 0px, 0px)');
+        }else if(result_star4 >=30 && result_star4 < 35){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-70%, 0px, 0px)');
+        }else if(result_star4 >=35 && result_star4 < 40){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-65%, 0px, 0px)');
+        }else if(result_star4 >=40 && result_star4 < 45){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-60%, 0px, 0px)');
+        }else if(result_star4 >=45 && result_star4 < 50){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-55%, 0px, 0px)');
+        }else if(result_star4 >=50 && result_star4 < 55){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-50%, 0px, 0px)');
+        }else if(result_star4 >=55 && result_star4 < 60){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-45%, 0px, 0px)');
+        }else if(result_star4 >=60 && result_star4 < 65){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-40%, 0px, 0px)');
+        }else if(result_star4 >=65 && result_star4 < 70){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-35%, 0px, 0px)');
+        }else if(result_star4 >=70 && result_star4 < 75){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-30%, 0px, 0px)');
+        }else if(result_star4 >=75 && result_star4 < 80){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-25%, 0px, 0px)');
+        }else if(result_star4 >=80 && result_star4 < 85){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-20%, 0px, 0px)');
+        }else if(result_star4 >=85 && result_star4 < 90){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-15%, 0px, 0px)');
+        }else if(result_star4 >=90 && result_star4 < 95){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-10%, 0px, 0px)');
+        }else if(result_star4 >=95 && result_star4 < 100){
+          $('.result_star4 .progressbar span').css('transform','translate3d(-5%, 0px, 0px)');
+        }else if(result_star4 == 100){
+          $('.result_star4 .progressbar span').css('transform','translate3d(0%, 0px, 0px)');
+        }
+        $('.porce_star4').html(result_star4+'%');
+      }
+      
+      if(result_star3 == 0 || result_star3 == ""){
+        $('.star_3').attr('data-progress','0');
+        $('.result_star3 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        $('.porce_star3').html('0%');
+      }else{
+        $('.star_3').attr('data-progress',result_star3);
+        if(result_star3 == 0){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        }else if(result_star3 > 0 && result_star3 < 10){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-95%, 0px, 0px)');
+        }else if(result_star3 >=10 && result_star3 < 15){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-90%, 0px, 0px)');
+        }else if(result_star3 >=15 && result_star3 < 20){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-85%, 0px, 0px)');
+        }else if(result_star3 >=20 && result_star3 < 25){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-80%, 0px, 0px)');
+        }else if(result_star3 >=25 && result_star3 < 30){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-75%, 0px, 0px)');
+        }else if(result_star3 >=30 && result_star3 < 35){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-70%, 0px, 0px)');
+        }else if(result_star3 >=35 && result_star3 < 40){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-65%, 0px, 0px)');
+        }else if(result_star3 >=40 && result_star3 < 45){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-60%, 0px, 0px)');
+        }else if(result_star3 >=45 && result_star3 < 50){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-55%, 0px, 0px)');
+        }else if(result_star3 >=50 && result_star3 < 55){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-50%, 0px, 0px)');
+        }else if(result_star3 >=55 && result_star3 < 60){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-45%, 0px, 0px)');
+        }else if(result_star3 >=60 && result_star3 < 65){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-40%, 0px, 0px)');
+        }else if(result_star3 >=65 && result_star3 < 70){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-35%, 0px, 0px)');
+        }else if(result_star3 >=70 && result_star3 < 75){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-30%, 0px, 0px)');
+        }else if(result_star3 >=75 && result_star3 < 80){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-25%, 0px, 0px)');
+        }else if(result_star3 >=80 && result_star3 < 85){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-20%, 0px, 0px)');
+        }else if(result_star3 >=85 && result_star3 < 90){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-15%, 0px, 0px)');
+        }else if(result_star3 >=90 && result_star3 < 95){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-10%, 0px, 0px)');
+        }else if(result_star3 >=95 && result_star3 < 100){
+          $('.result_star3 .progressbar span').css('transform','translate3d(-5%, 0px, 0px)');
+        }else if(result_star3 == 100){
+          $('.result_star3 .progressbar span').css('transform','translate3d(0%, 0px, 0px)');
+        }
+        $('.porce_star3').html(result_star3+'%');
+      }
+      
+      if(result_star2 == 0 || result_star2 == ""){
+        $('.star_2').attr('data-progress','0');
+        $('.result_star2 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        $('.porce_star2').html('0%');
+      }else{
+        $('.star_2').attr('data-progress',result_star2);
+        if(result_star2 == 0){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        }else if(result_star2 > 0 && result_star2 < 10){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-95%, 0px, 0px)');
+        }else if(result_star2 >=10 && result_star2 < 15){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-90%, 0px, 0px)');
+        }else if(result_star2 >=15 && result_star2 < 20){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-85%, 0px, 0px)');
+        }else if(result_star2 >=20 && result_star2 < 25){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-80%, 0px, 0px)');
+        }else if(result_star2 >=25 && result_star2 < 30){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-75%, 0px, 0px)');
+        }else if(result_star2 >=30 && result_star2 < 35){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-70%, 0px, 0px)');
+        }else if(result_star2 >=35 && result_star2 < 40){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-65%, 0px, 0px)');
+        }else if(result_star2 >=40 && result_star2 < 45){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-60%, 0px, 0px)');
+        }else if(result_star2 >=45 && result_star2 < 50){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-55%, 0px, 0px)');
+        }else if(result_star2 >=50 && result_star2 < 55){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-50%, 0px, 0px)');
+        }else if(result_star2 >=55 && result_star2 < 60){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-45%, 0px, 0px)');
+        }else if(result_star2 >=60 && result_star2 < 65){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-40%, 0px, 0px)');
+        }else if(result_star2 >=65 && result_star2 < 70){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-35%, 0px, 0px)');
+        }else if(result_star2 >=70 && result_star2 < 75){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-30%, 0px, 0px)');
+        }else if(result_star2 >=75 && result_star2 < 80){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-25%, 0px, 0px)');
+        }else if(result_star2 >=80 && result_star2 < 85){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-20%, 0px, 0px)');
+        }else if(result_star2 >=85 && result_star2 < 90){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-15%, 0px, 0px)');
+        }else if(result_star2 >=90 && result_star2 < 95){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-10%, 0px, 0px)');
+        }else if(result_star2 >=95 && result_star2 < 100){
+          $('.result_star2 .progressbar span').css('transform','translate3d(-5%, 0px, 0px)');
+        }else if(result_star2 == 100){
+          $('.result_star2 .progressbar span').css('transform','translate3d(0%, 0px, 0px)');
+        }
+        $('.porce_star2').html(result_star2+'%');
+      }
+
+      if(result_star1 == 0 || result_star1 == ""){
+        $('.star_1').attr('data-progress','0');
+        $('.result_star1 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        $('.porce_star1').html('0%');
+      }else{
+        $('.star_1').attr('data-progress',result_star1);
+        if(result_star1 == 0){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-100%, 0px, 0px)');
+        }else if(result_star1 > 0 && result_star1 < 10){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-95%, 0px, 0px)');
+        }else if(result_star1 >=10 && result_star1 < 15){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-90%, 0px, 0px)');
+        }else if(result_star1 >=15 && result_star1 < 20){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-85%, 0px, 0px)');
+        }else if(result_star1 >=20 && result_star1 < 25){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-80%, 0px, 0px)');
+        }else if(result_star1 >=25 && result_star1 < 30){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-75%, 0px, 0px)');
+        }else if(result_star1 >=30 && result_star1 < 35){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-70%, 0px, 0px)');
+        }else if(result_star1 >=35 && result_star1 < 40){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-65%, 0px, 0px)');
+        }else if(result_star1 >=40 && result_star1 < 45){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-60%, 0px, 0px)');
+        }else if(result_star1 >=45 && result_star1 < 50){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-55%, 0px, 0px)');
+        }else if(result_star1 >=50 && result_star1 < 55){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-50%, 0px, 0px)');
+        }else if(result_star1 >=55 && result_star1 < 60){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-45%, 0px, 0px)');
+        }else if(result_star1 >=60 && result_star1 < 65){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-40%, 0px, 0px)');
+        }else if(result_star1 >=65 && result_star1 < 70){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-35%, 0px, 0px)');
+        }else if(result_star1 >=70 && result_star1 < 75){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-30%, 0px, 0px)');
+        }else if(result_star1 >=75 && result_star1 < 80){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-25%, 0px, 0px)');
+        }else if(result_star1 >=80 && result_star1 < 85){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-20%, 0px, 0px)');
+        }else if(result_star1 >=85 && result_star1 < 90){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-15%, 0px, 0px)');
+        }else if(result_star1 >=90 && result_star1 < 95){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-10%, 0px, 0px)');
+        }else if(result_star1 >=95 && result_star1 < 100){
+          $('.result_star1 .progressbar span').css('transform','translate3d(-5%, 0px, 0px)');
+        }else if(result_star1 == 100){
+          $('.result_star1 .progressbar span').css('transform','translate3d(0%, 0px, 0px)');
+        }
+        $('.porce_star1').html(result_star1+'%');
+      }
+      
+    });  
+
+  });
+
+}
+
+function setStar1(){
+  localStorage.setItem("estrelas","1");
+
+  var star = localStorage.getItem("estrelas");
+  var v_perfil = localStorage.getItem('id_perfil');
+  var v_user = localStorage.getItem('id_usuario');
+
+  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+    app.dialog.alert("Obrigado pelo seu Feedback",""); 
+    app.dialog.close();
+    localStorage.removeItem("estrelas");
+    avaliacao();
+  });  
+
+}
+function setStar2(){
+  localStorage.setItem("estrelas","2");
+
+  var star = localStorage.getItem("estrelas");
+  var v_perfil = localStorage.getItem('id_perfil');
+  var v_user = localStorage.getItem('id_usuario');
+
+  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+    app.dialog.alert("Obrigado pelo seu Feedback",""); 
+    app.dialog.close();
+    localStorage.removeItem("estrelas");
+    avaliacao();
+  });  
+}
+function setStar3(){
+  localStorage.setItem("estrelas","3");
+
+  var star = localStorage.getItem("estrelas");
+  var v_perfil = localStorage.getItem('id_perfil');
+  var v_user = localStorage.getItem('id_usuario');
+
+  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+    app.dialog.alert("Obrigado pelo seu Feedback",""); 
+    app.dialog.close();
+    localStorage.removeItem("estrelas");
+    avaliacao();
+  });  
+}
+function setStar4(){
+  localStorage.setItem("estrelas","4");
+
+  var star = localStorage.getItem("estrelas");
+  var v_perfil = localStorage.getItem('id_perfil');
+  var v_user = localStorage.getItem('id_usuario');
+
+  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+    app.dialog.alert("Obrigado pelo seu Feedback",""); 
+    app.dialog.close();
+    localStorage.removeItem("estrelas");
+    avaliacao();
+  });  
+}
+function setStar5(){
+  localStorage.setItem("estrelas","5");
+
+  var star = localStorage.getItem("estrelas");
+  var v_perfil = localStorage.getItem('id_perfil');
+  var v_user = localStorage.getItem('id_usuario');
+
+  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+    app.dialog.alert("Obrigado pelo seu Feedback",""); 
+    app.dialog.close();
+    localStorage.removeItem("estrelas");
+    avaliacao();
+  });  
 }
 
 // Função fecha alert de boas vindas
