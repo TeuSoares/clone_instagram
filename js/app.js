@@ -215,6 +215,16 @@ var app = new Framework7({
           },
         }, 
       },
+      {
+        path: '/atividade/',
+        url: 'atividade.html?a=5',
+        on:{
+          pageInit:function(){
+            escuroON();
+            verAtividades();
+          },
+        }, 
+      },
     ],
     // ... other parameters
   });
@@ -286,6 +296,7 @@ function escuroON(){
       $(".on").show();
       $(".preload").css({"background-color":"#000000"});
       $('.imageLoad').attr('src',"img/load-white.svg");
+      $(".atividade-li .list li").css("border-bottom","1px solid rgb(255,255,255,0.1)");
     }else{
       $(".bg").removeClass("theme-dark");
       $(".bg-black").removeClass("bg-white");
@@ -745,7 +756,7 @@ function publicacaoUser(){
 
     $(".back-public").on("click", function(){
       pagePerfil();
-      // localStorage.removeItem('id_public');
+      localStorage.removeItem('id_public');
     });
   });  
   escuroON();
@@ -1331,6 +1342,7 @@ function pagePerfil(){
         localStorage.removeItem('id_usuario');
         localStorage.removeItem('usuario');
         localStorage.removeItem('email_instagram');
+        localStorage.removeItem('id_perfil');
       }, 2000);
 
     });
@@ -1358,8 +1370,9 @@ function pagePerfil(){
 
 function perfilUsuario(){
   $(document).ready(function(){
+    var v_id = localStorage.getItem("id_usuario");
     $(".perfilUsuario").on("click", function(){
-      localStorage.setItem("id_perfil",cod_usuario);
+      localStorage.setItem("id_perfil",v_id);
     });
   });
 }
@@ -1396,6 +1409,10 @@ function pagePerfil2(){
     $(".seguirP").on("click", function(){
       pagePerfil2();
     });
+
+    if(v_id != v_perfil){
+      inserirVisitantes();
+    }
 
     if(dados[4] !="" && dados[5] !="" && dados[6] !=""){
       $("#editarPeril").hide();
@@ -2497,6 +2514,53 @@ function setStar5(){
     localStorage.removeItem("estrelas");
     avaliacao();
   });  
+}
+
+function inserirVisitantes(){
+  $(document).ready(function(){
+    var v_perfil = localStorage.getItem('id_perfil');
+    var v_user = localStorage.getItem('id_usuario');
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirVisitantes.php', {id_perfil:v_perfil,id_usuario:v_user}, function(resposta){ }); 
+
+  });
+}
+
+function verAtividades(){
+  $(document).ready(function(){
+    var v_user = localStorage.getItem('id_usuario');
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/verAtividades.php', {id_usuario:v_user}, function(resposta){ 
+      dados = (resposta).split("|");
+      closePreLoader();
+
+      $(".visitas_hoje").html(dados[0]);
+      $(".seguidores-hoje").html(dados[1]);
+      $(".visitas_semana").html(dados[2]);
+      $(".seguidores_semana").html(dados[3]);
+      $(".visitas_mes").html(dados[4]);
+      $(".seguidores_mes").html(dados[5]);
+      $(".number_curtida").html(dados[6]);
+      $("#imgPublic").attr("src",dados[7]);
+      $(".number_comentario").html(dados[8]);
+      $("#imgPublic2").attr("src",dados[9]);
+
+      $("#fk_id_public1").val(dados[10]);
+      $("#fk_id_public2").val(dados[11]);
+
+    });
+
+    $("#imgPublic").on("click", function(){
+      var fk_id_public1 = $("#fk_id_public1").val();
+      localStorage.setItem("id_public",fk_id_public1);
+    });
+
+    $("#imgPublic2").on("click", function(){
+      var fk_id_public2 = $("#fk_id_public2").val();
+      localStorage.setItem("id_public",fk_id_public2);
+    });
+
+  });
 }
 
 // Função fecha alert de boas vindas
