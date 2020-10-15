@@ -486,6 +486,9 @@
 .login .page-content{
   overflow: visible;
 }
+.sair{
+  border-top: 1px solid rgb(0,0,0,0.2);
+}
 .sair a {
   padding-left: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
   padding-right: calc(var(--f7-list-chevron-icon-area) + var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-right));
@@ -581,6 +584,78 @@
 }
 .likes-atividade i{
   font-size: 1.1em!important;
+}
+
+.swiper-pagination{
+  position: static!important;
+  margin-top: 5px!important;
+}
+span.swiper-pagination-bullet{
+  margin: 0 4px;
+}
+.swiper-slide{
+  font-size: 1.3em;
+  font-weight: 300;
+  text-align: center;
+}
+.swiper-slide #footer{
+  position: relative;
+  bottom: 0;
+  margin-top: 23%;
+}
+.icon-empresa{
+  font-size: 100px!important;
+}
+.deslizaLado{
+  font-size: 20px;
+}
+.filtrosPRO i{
+  font-size: 1.2em!important;
+}
+.addFiltrosPRO .list .item-content{
+  padding-left: 0!important;
+}
+.addFiltrosPRO .list{
+  margin: 0!important;
+}
+.logoSobre {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.logoSobre img{
+  width: 40%;
+}
+.content-sobre{
+  font-size: 1.3em;
+  font-weight: 300;
+  text-align: center;
+}
+.fechar-panel .list{
+  margin: 0!important;
+}
+.fechar-panel .tabbar a, .tabbar-labels a {
+  color: #125fec!important;
+}
+.bioUser{
+  display: block;
+  margin-bottom: 12px;
+}
+.imgDiamond{
+  position: relative;
+  top: 2px;
+  width: 18px;
+}
+.imgTuxedo{
+  position: relative;
+  top: 2px;
+  width: 18px;
+}
+.imgDiamond2{
+  position: relative;
+  top: 2px;
+  width: 13px;
 }
 
 @media screen and (max-width:385px){

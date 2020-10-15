@@ -94,7 +94,7 @@ var app = new Framework7({
       },
       {
         path: '/pesquisar/',
-        url: 'pesquisar.html?a=b',
+        url: 'pesquisar.html?a=7',
         on:{
           pageInit:function(){
             pesquisa_perfil()
@@ -104,7 +104,7 @@ var app = new Framework7({
       {
         name: 'perfil',
         path: '/perfil/',
-        url: 'perfil.html?b=5',
+        url: 'perfil.html?b=x',
         on:{
           pageInit:function(){
             pagePerfil();
@@ -169,7 +169,7 @@ var app = new Framework7({
       },
       {
         path: '/perfilProfissional/',
-        url: 'perfil-profissional.html?a=5',
+        url: 'perfil-profissional.html?a=7',
         on:{
           pageInit:function(){
             escuroON();
@@ -222,6 +222,46 @@ var app = new Framework7({
           pageInit:function(){
             escuroON();
             verAtividades();
+          },
+        }, 
+      },
+      {
+        path: '/sobre/',
+        url: 'sobre.html?a=4',
+        on:{
+          pageInit:function(){
+            escuroON();
+            sobre();
+          },
+        }, 
+      },
+      {
+        path: '/suporte/',
+        url: 'suporte.html?a=4',
+        on:{
+          pageInit:function(){
+            escuroON();
+            suporte();
+          },
+        }, 
+      },
+      {
+        path: '/bug/',
+        url: 'bug.html?a=4',
+        on:{
+          pageInit:function(){
+            escuroON();
+            bug();
+          },
+        }, 
+      },
+      {
+        path: '/adm/',
+        url: 'painel-adm.html?a=b',
+        on:{
+          pageInit:function(){
+            escuroON();
+            painelADM();
           },
         }, 
       },
@@ -297,6 +337,8 @@ function escuroON(){
       $(".preload").css({"background-color":"#000000"});
       $('.imageLoad').attr('src',"img/load-white.svg");
       $(".atividade-li .list li").css("border-bottom","1px solid rgb(255,255,255,0.1)");
+      $(".swiper-pagination-bullet").css({"background-color":"white"});
+      $(".sair").css("border-top","1px solid rgb(255,255,255,0.2)");
     }else{
       $(".bg").removeClass("theme-dark");
       $(".bg-black").removeClass("bg-white");
@@ -323,6 +365,7 @@ function escuroON(){
       $(".on").hide();
       $(".preload").css({"background-color":"#ffffff"});
       $('.imageLoad').attr('src',"img/load.svg");
+      $(".sair").css("border-top","1px solid rgb(0,0,0,0.2)");
     }
   });
 
@@ -374,14 +417,16 @@ function pageLogin(){
               app.dialog.preloader('Entrando...');
               setTimeout(function () {
                 app.dialog.close();
-                app.dialog.alert("Bem-Vindo "+data.nome,"");
+                app.dialog.alert('<span class="text-align-center">Aproveite nossa rede social para compartilhar suas melhores fotos, '+ 
+                'interaja com seus amigos e você também pode aproveitar para conhecer pessoas novas. '+ 
+                'Caso você tenha um negócio, aproveite e deixe seu perfil profissional, habilitando novos recursos para empresas</span><br>'+
+                '<a href="/perfilProfissional/" class="text-align-center" onclick="fecharAlertPerfilProfissional();">Conheça o perfil profissional</a>','<h3 class="text-align-center">Bem Vindo <br>'+data.nome+'</h3>');
 
                 localStorage.setItem('id_usuario',data.id_usuario);
                 localStorage.setItem('usuario',data.nome);
                 localStorage.setItem('email_instagram',data.email);
   
                 mainView.router.navigate({name:'home'});
-                fechaAlert();
               }, 3000);
               
             }else{
@@ -468,6 +513,7 @@ function pageCadastro(){
           }else{
             app.dialog.alert("Cadastro realizado com sucesso","");
             $("#nome_c,#email_c,#senha_c,#celular").val("");
+            mainView.router.navigate({name:'login'});
           }
         }, 3000);
   
@@ -488,6 +534,9 @@ function pageCadastro(){
   });
 }
 
+function fecharAlertPerfilProfissional(){
+  app.dialog.close();
+}
 
 // Gerar um nome aleátorio para a foto
 function nomeFoto(){
@@ -519,6 +568,7 @@ function publicacoes(){
     $(document).ready(function(){
 
       var idP = localStorage.getItem('id_public');
+      var idUsuario = localStorage.getItem('id_usuario');
 
       online();
 
@@ -541,7 +591,13 @@ function publicacoes(){
                   dados+='<div class="card-header">';
                     dados+='<div class="demo-facebook-avatar"><img src="https://www.limeiraweb.com.br/mateus/php/uploads/'+resultado[i].imagePerfil+'" width="100%"/></div>';
                     idUser = resultado[i].fk_id_usuario;
-                    dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a></div>';
+                    if(resultado[i].tipoPerfil == "profissional"){
+                      dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a>&nbsp;<img src="img/diamond.png" class="imgDiamond2" /></div>';
+                    }else if(resultado[i].tipoPerfil == "adm"){
+                      dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a>&nbsp;<img src="img/tuxedo.png" class="imgDiamond2" /></div>';
+                    }else{
+                      dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a></div>';
+                    }
                     dados+='<div class="demo-facebook-date">'+resultado[i].dataFormat+'</div>';
                   dados+='</div>';
 
@@ -553,7 +609,7 @@ function publicacoes(){
                     $(".navbar-legenda").addClass("display-none");
                   });
 
-                    if(cod_usuario == resultado[i].fk_id_usuario){
+                    if(idUsuario == resultado[i].fk_id_usuario){
                       id2 = resultado[i].id_publicInsta;
                       dados+='<div class="bg-black margin-top margin-right">';
                         dados+='<a class="link popover-open" href="#" data-popover=".popover-links" onclick=setPublic("'+id2+'");><i class="f7-icons">ellipsis_vertical</i></a>';
@@ -653,6 +709,7 @@ function publicacaoUser(){
 
     online();
   var v_publicacao = localStorage.getItem('id_public');
+  var idUsuario = localStorage.getItem('id_usuario');
   var dados = "";
 
     app.request.post("https://www.limeiraweb.com.br/mateus/php/publicacaoUser.php",{
@@ -667,7 +724,11 @@ function publicacaoUser(){
             dados+='<div class="card-header">';
               dados+='<div class="demo-facebook-avatar"><img src="https://www.limeiraweb.com.br/mateus/php/uploads/'+resultado[5]+'" width="100%"/></div>';
               idUser = resultado[4];
-              dados+='<div class="demo-facebook-name bg-black"><a href="/perfil/" class="nameP" onclick=setIDP("'+idUser+'")>'+resultado[0]+'</a></div>';
+              if(resultado[11] == "profissional"){
+                dados+='<div class="demo-facebook-name bg-black"><a href="/perfil/" class="nameP" onclick=setIDP("'+idUser+'")>'+resultado[0]+'</a>&nbsp;<img src="img/diamond.png" class="imgDiamond2" /></div>';
+              }else{
+                dados+='<div class="demo-facebook-name bg-black"><a href="/perfil/" class="nameP" onclick=setIDP("'+idUser+'")>'+resultado[0]+'</a></div>';
+              }
               dados+='<div class="demo-facebook-date">'+resultado[6]+'</div>';
             dados+='</div>';
 
@@ -678,7 +739,7 @@ function publicacaoUser(){
               $(".navbar-legenda").addClass("display-none");
             });
 
-            if(cod_usuario == resultado[4]){
+            if(idUsuario == resultado[4]){
               id2 = resultado[7];
               dados+='<div class="bg-black margin-top margin-right">';
                 dados+='<a class="link popover-open" href="#" data-popover=".popover-links" onclick=setPublic("'+id2+'");><i class="f7-icons">ellipsis_vertical</i></a>';
@@ -755,7 +816,7 @@ function publicacaoUser(){
     })
 
     $(".back-public").on("click", function(){
-      pagePerfil();
+      // pagePerfil();
       localStorage.removeItem('id_public');
     });
   });  
@@ -1280,6 +1341,7 @@ function pagePublicar(){
 function pagePerfil(){
 
   $(document).ready(function(){
+    $(".painel-adm").hide();
     online();
     perfilUsuario();
     app.request.post('https://www.limeiraweb.com.br/mateus/php/usuarios_cadastrador.php',{},
@@ -1312,10 +1374,21 @@ function pagePerfil(){
       });
       escuroON();
 
-      if(dados[4]!=""){
+      if(v_id == "1"){
         $(".info-perfil,#avaliacao,.atividade-perfil").show();
+        $(".perfilPRO").hide();
+        $(".imgTuxedo").show();
+        $(".imgDiamond").hide();
+      }else if(dados[4]!=""){
+        $(".info-perfil,#avaliacao,.atividade-perfil").show();
+        $(".perfilPRO").hide();
+        $(".imgDiamond").show();
+        $(".imgTuxedo").hide();
       }else{
         $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+        $(".perfilPRO").show();
+        $(".imgDiamond").hide();
+        $(".imgTuxedo").hide();
       }
 
       $(".link-site").on("click", function(){
@@ -1325,43 +1398,45 @@ function pagePerfil(){
       if(dados[5] == "" || dados[6] == "" || dados[7] == "" || dados[8] == "" || dados[9] == ""){
         $(".endereco,.site,.telefone").hide();
       }
+
+      if(v_id == dados[10]){
+        $(".painel-adm").show();
+      }else{
+        $(".painel-adm").hide();
+      }
   
     });
   
     escuroON();
+
+    
+      $(".logout").on("click",function(){
+
+        app.dialog.confirm("Deseja realmente sair?","",function(){
+
+        app.dialog.preloader('Saindo...');
   
-    $(".logout").on("click",function(){
-
-      app.dialog.preloader('Saindo...');
-
-      setTimeout(function () {
-        app.dialog.close();
-        mainView.router.navigate({name:'login'});
-        app.panel.close(".panel-right");
-        // location.reload();
-        localStorage.removeItem('id_usuario');
-        localStorage.removeItem('usuario');
-        localStorage.removeItem('email_instagram');
-        localStorage.removeItem('id_perfil');
-      }, 2000);
+        setTimeout(function () {
+          app.dialog.close();
+          mainView.router.navigate({name:'login'});
+          app.panel.close(".panel-right");
+          // location.reload();
+          localStorage.removeItem('id_usuario');
+          localStorage.removeItem('usuario');
+          localStorage.removeItem('email_instagram');
+          localStorage.removeItem('id_perfil');
+        }, 2000);
+  
+      });
 
     });
 
     $(".perfilPRO").on("click",function(){
-      // mainView.router.navigate({name:'login'});
       app.panel.close(".panel-right");
     });
 
-    $("#facebook").on("click", function(){
-      window.open('https://www.facebook.com/profile.php?id=100004901702524', '_blank');
-    });
-
-    $("#instagram").on("click", function(){
-      window.open('https://www.instagram.com/teusoares1/', '_blank');
-    });
-
-    $("#whatsapp").on("click", function(){
-      window.open('https://api.whatsapp.com/send?1=pt_BR&phone=5519998317785', '_blank');
+    $(".sobre").on("click",function(){
+      app.panel.close(".panel-right");
     });
 
   });
@@ -1414,13 +1489,25 @@ function pagePerfil2(){
       inserirVisitantes();
     }
 
-    if(dados[4] !="" && dados[5] !="" && dados[6] !=""){
+    if(v_perfil == "1"){
+      $(".info-perfil,#avaliacao,.atividade-perfil").show();
+      $("#editarPeril").show();
+      $(".seguirP").hide();
+      $(".seguindo").hide();
+      $(".mensagem").hide();
+      $(".info-perfil,.link-avaliacao,.atividade-perfil").removeClass("col-50");
+      $(".info-perfil,.link-avaliacao,.atividade-perfil").addClass("col-33");
+      $(".imgTuxedo").show();
+      $(".imgDiamond").hide();
+    }else if(dados[4] !="" && dados[5] !="" && dados[6] !=""){
       $("#editarPeril").hide();
       $(".seguirP").hide();
       $(".seguindo").show();
       $(".mensagem").show();
       $(".info-perfil,#avaliacao").show();
       $(".atividade-perfil").hide();
+      $(".imgDiamond").show();
+      $(".imgTuxedo").hide();
     }else if(dados[4] !="" && dados[5]){
       $("#editarPeril").hide();
       $(".seguirP").hide();
@@ -1428,6 +1515,8 @@ function pagePerfil2(){
       $(".mensagem").show();
       $(".info-perfil,#avaliacao").hide();
       $(".atividade-perfil").hide();
+      $(".imgDiamond").hide();
+      $(".imgTuxedo").hide();
     }else if(v_id == v_perfil && dados[6] !=""){
       $("#editarPeril").show();
       $(".seguirP").hide();
@@ -1436,18 +1525,24 @@ function pagePerfil2(){
       $(".info-perfil,#avaliacao,.atividade-perfil").show();
       $(".info-perfil,.link-avaliacao,.atividade-perfil").removeClass("col-50");
       $(".info-perfil,.link-avaliacao,.atividade-perfil").addClass("col-33");
+      $(".imgDiamond").show();
+      $(".imgTuxedo").hide();
     }else if(v_id == v_perfil){
       $("#editarPeril").show();
       $(".seguirP").hide();
       $(".seguindo").hide();
       $(".mensagem").hide();
       $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+      $(".imgDiamond").hide();
+      $(".imgTuxedo").hide();
     }else{
       $("#editarPeril").hide();
       $(".seguirP").show();
       $(".seguindo").hide();
       $(".mensagem").show();
       $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+      $(".imgDiamond").hide();
+      $(".imgTuxedo").hide();
     }
 
     escuroON();
@@ -2019,6 +2114,22 @@ function enviadas(){
 
 function categoria(){
   $(document).ready(function(){
+    var v_id = localStorage.getItem("id_usuario");
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/verPerfil_projeto.php',{
+      id_usuario:v_id,
+      },
+      function(resposta){
+        dados = (resposta).split("|");
+
+        if(dados[4] !=""){
+          setTimeout(function () {
+            app.dialog.alert("Esse perfil ja é profissional!!","AVISO");
+            mainView.router.navigate({name:'perfil'});
+          }, 500);
+        }
+
+    }); 
     // Inicializar o pesquisar
     var searchbar = app.searchbar.create({
       el: '.searchbar',
@@ -2027,8 +2138,8 @@ function categoria(){
     }); // Fim searchbar
 
     app.request.post('https://www.limeiraweb.com.br/mateus/php/lista_de_categorias.php', {}, function(resposta){
-    
-      $("#list_categorias").html(resposta);
+    dados = (resposta).split("|");
+      $("#list_categorias").html(dados[0]);
       closePreLoader();
 
       $(document).on("click", ".select_categoria", function(){
@@ -2558,6 +2669,107 @@ function verAtividades(){
     $("#imgPublic2").on("click", function(){
       var fk_id_public2 = $("#fk_id_public2").val();
       localStorage.setItem("id_public",fk_id_public2);
+    });
+
+  });
+}
+
+function sobre(){ 
+  var fk_user_sobre = localStorage.getItem("id_perfil");
+  
+  $(document).ready(function(){
+
+    $(".setIdADM").on("click", function(){
+      localStorage.setItem("id_perfil","1");
+    });
+
+    $(".back-sobre").on("click", function(){
+      localStorage.setItem("id_perfil",fk_user_sobre);
+    });
+
+    $("#facebook").on("click", function(){
+      window.open('https://www.facebook.com/profile.php?id=100004901702524', '_blank');
+    });
+
+    $("#instagram").on("click", function(){
+      window.open('https://www.instagram.com/teusoares1/', '_blank');
+    });
+
+    $("#whatsapp").on("click", function(){
+      window.open('https://api.whatsapp.com/send?1=pt_BR&phone=5519998317785', '_blank');
+    });
+
+  });
+
+}
+
+function suporte(){
+  $(document).ready(function(){
+
+    $("#gravar-suporte").on("click", function(){
+      var v_id = localStorage.getItem("id_usuario");
+      var vSuporte = $("#suporte").val();
+      app.dialog.preloader('Enviando...');
+
+      app.request.post('https://www.limeiraweb.com.br/mateus/php/suporte.php', {id_usuario:v_id,suporte:vSuporte}, function(resposta){ 
+
+        setTimeout(function(){
+          app.dialog.alert("Recebemos seu pedido de suporte, iremos avisar quando seu problema for resolvido ou entraremos em contato","AVISO");
+          app.dialog.close();
+          app.views.current.router.back();
+          fechaAlert();
+        },1000);
+
+      });
+
+    });
+
+  });
+}
+
+function bug(){
+  $(document).ready(function(){
+    $("#gravar-bug").on("click", function(){
+      var v_id = localStorage.getItem("id_usuario");
+      var vBug = $("#bug").val();
+      app.dialog.preloader('Enviando...');
+
+      app.request.post('https://www.limeiraweb.com.br/mateus/php/bug.php', {id_usuario:v_id,bug:vBug}, function(resposta){ 
+
+        setTimeout(function(){
+          app.dialog.alert("Obrigado pelo seu reporte","AVISO");
+          app.dialog.close();
+          app.views.current.router.back();
+          fechaAlert();
+        },1000);
+
+      });
+
+    });
+  });
+}
+
+function painelADM(){
+  var id_adm = localStorage.getItem("id_usuario");
+  $(document).ready(function(){
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/painel-adm.php', { }, function(resposta){ 
+      dados = (resposta).split("|");
+      closePreLoader();
+
+      $("#verSuporte").html(dados[0]);
+      $("#verBug").html(dados[1]);
+
+      $(document).on("click", ".setADM", function(){
+        var id = $(this).attr('data');
+        localStorage.setItem('id_perfil', id); 
+      });   
+      
+      escuroON();
+
+    });
+
+    $(".back-adm").on("click", function(){
+      localStorage.setItem("id_perfil",id_adm)
     });
 
   });
