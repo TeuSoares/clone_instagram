@@ -104,7 +104,7 @@ var app = new Framework7({
       {
         name: 'perfil',
         path: '/perfil/',
-        url: 'perfil.html?b=d',
+        url: 'perfil.html?b=5',
         on:{
           pageInit:function(){
             pagePerfil();
@@ -189,7 +189,7 @@ var app = new Framework7({
       },
       {
         path: '/orcamento/',
-        url: 'orcamento.html?a=5',
+        url: 'orcamento.html?a=8',
         on:{
           pageInit:function(){
             escuroON();
@@ -203,6 +203,7 @@ var app = new Framework7({
         on:{
           pageInit:function(){
             escuroON();
+            resposta_orcamento();
           },
         }, 
       },
@@ -286,12 +287,43 @@ var app = new Framework7({
         }, 
       },
       {
+        name: 'verOrcamentosPRO',
         path: '/verOrcamentosPRO/',
-        url: 'orcamentos_realizar.html?a=8',
+        url: 'orcamentos_realizar.html?a=5',
         on:{
           pageInit:function(){
             escuroON();
             verOrcamentosRealizar();
+          },
+        }, 
+      },
+      {
+        path: '/orcamento_cliente/',
+        url: 'verOrcamentoCliente.html?a=5',
+        on:{
+          pageInit:function(){
+            escuroON();
+            resultOrcamentoCliente();
+          },
+        }, 
+      },
+      {
+        path: '/page-orcamento/',
+        url: 'orcamentos_clientes.html?a=7',
+        on:{
+          pageInit:function(){
+            escuroON();
+            verRespostaProfissional();
+          },
+        }, 
+      },
+      {
+        path: '/solitacaoOrcamentos/',
+        url: 'solicitacaoOrcamentos.html?a=6',
+        on:{
+          pageInit:function(){
+            escuroON();
+            solicitacao_orcamento();
           },
         }, 
       },
@@ -968,10 +1000,9 @@ function pesquisa_perfil(){
 
       closePreLoader();
 
-      $(document).on("click", ".item-inner", function(){
-        var id = $(this).attr('data'); // recupera o ID
-        // app.dialog.alert("Home - Gravei: " + id); teste para ver se está recuperando o ID
-        localStorage.setItem('id_perfil', id); // armazena o ID no ambiente local
+      $(document).on("click", ".pesquisaPerfil", function(){
+        var id = $(this).attr('data');
+        localStorage.setItem('id_perfil', id); 
       });
 
       $(document).ready(function(){
@@ -3030,6 +3061,8 @@ function orcamento_solicitado(){
         setTimeout(function(){
           app.dialog.close();
           mainView.router.navigate({name:'perfil'});
+          app.dialog.alert("Pedido realizado com sucesso, aguarde a resposta do profissional","AVISO");
+          localStorage.setItem("id_perfil", v_id);
         },1000);
           
       })
@@ -3038,16 +3071,175 @@ function orcamento_solicitado(){
 }
 
 function verOrcamentosRealizar(){
+  var salvarID = localStorage.getItem("id_usuario");
   $(document).ready(function(){
     var id = localStorage.getItem('id_usuario');
 
     app.request.post("https://www.limeiraweb.com.br/mateus/php/verOrcamento_realizar.php",{
       id_usuario:id,
     },function(resposta){
+      closePreLoader();
+      dados = (resposta).split("|");
         
-      $("#orcamentoRealizar").html(resposta);
+      $("#orcamentoRealizar").html(dados[0]);
+      $("#aguardandoResposta").html(dados[1]);
+      $("#orcamentoCliente-interesse").html(dados[2]);
+      $("#orcamentoCliente-recusados").html(dados[3]);
+
+      $(document).on("click", ".verTrabalho_socilitado", function(){
+        var trabalho = $(this).attr('data-trabalho');
+        var cliente = $(this).attr('data-cliente');
+        localStorage.setItem('id_trabalho', trabalho); 
+        localStorage.setItem('id_perfil', cliente); 
+      });
         
     })
+
+    $(".back-orcamento").on("click", function(){
+      localStorage.setItem("id_perfil", salvarID);
+      localStorage.removeItem("id_trabalho");
+    });
+
+  });
+}
+
+function resultOrcamentoCliente(){
+  $(document).ready(function(){
+    var idTrabalho = localStorage.getItem('id_trabalho');
+    var v_id = localStorage.getItem('id_usuario');
+
+    app.request.post("https://www.limeiraweb.com.br/mateus/php/orcamento_cliente.php",{
+      id_trabalho:idTrabalho,id_usuario:v_id
+    },function(resposta){
+      dados = (resposta).split("|");
+      closePreLoader();
+        
+      $("#visualizarOrcamento").html(dados[0]);
+
+      if(dados[1] !="" && dados[2] !=""){
+        $(".button-profissional").hide();
+      }else{
+        $(".button-profissional").show();
+      }
+        
+    })
+  });
+}
+
+function resposta_orcamento(){
+  $(document).ready(function(){
+    $("#inserir-resposta").on("click", function(){
+      var v_id = localStorage.getItem('id_usuario');
+      var idPRO = localStorage.getItem('id_perfil');
+      var idTrabalho = localStorage.getItem('id_trabalho');
+      var v_orcamento = $("#resposta_orcamento").val();
+  
+      app.dialog.preloader('Enviando...');
+      app.request.post("https://www.limeiraweb.com.br/mateus/php/insert_resposta_cliente.php",{
+        id_usuario:v_id,id_perfil:idPRO,resposta_orcamento:v_orcamento,id_trabalho:idTrabalho
+      },function(resposta){
+          
+        setTimeout(function(){
+          app.dialog.close();
+          mainView.router.navigate({name:'verOrcamentosPRO'});
+          verOrcamentosRealizar();
+          app.dialog.alert("Orçamento enviado com sucesso, aguarde a resposta do cliente","AVISO");
+          localStorage.removeItem("id_trabalho");
+          localStorage.setItem("id_perfil", v_id);
+        },1000);
+          
+      })
+    });
+  });
+}
+
+function verRespostaProfissional(){
+  var salvarID = localStorage.getItem("id_usuario");
+  $(document).ready(function(){
+    var id = localStorage.getItem('id_usuario');
+
+    app.request.post("https://www.limeiraweb.com.br/mateus/php/verOrcamentos_solicitados.php",{
+      id_usuario:id,
+    },function(resposta){
+      closePreLoader();
+      dados = (resposta).split("|");
+        
+      $("#orcamentoCliente").html(dados[0]);
+      $("#orcamentoCliente-interesse").html(dados[1]);
+
+      $(document).on("click", ".verOrcamento", function(){
+        var orca = $(this).attr('data-orcamento');
+        var pro = $(this).attr('data-profissional');
+        localStorage.setItem('id_trabalho', orca); 
+        localStorage.setItem('id_perfil', pro); 
+      });
+        
+    })
+
+    $(".back-orcamento").on("click", function(){
+      localStorage.setItem("id_perfil", salvarID);
+      localStorage.removeItem("id_trabalho");
+    });
+
+  });
+}
+
+function solicitacao_orcamento(){
+  $(document).ready(function(){
+    var idTrabalho = localStorage.getItem('id_trabalho');
+    var v_id = localStorage.getItem('id_usuario');
+
+    app.request.post("https://www.limeiraweb.com.br/mateus/php/solicitacao-orcamento.php",{
+      id_trabalho:idTrabalho,id_usuario:v_id
+    },function(resposta){
+      dados = (resposta).split("|");
+      closePreLoader();
+        
+      $("#solitacaoOrcamentos").html(dados[0]);
+
+      if(dados[1] !="Aguardando"){
+        $(".button-profissional").hide();
+      }else{
+        $(".button-profissional").show();
+      }
+        
+    })
+
+    $("#recusar_pro").on("click", function(){
+      var idTrabalho = localStorage.getItem('id_trabalho');
+      app.dialog.confirm("Deseja recusar esse orçamento?","",function(){
+        app.dialog.preloader('Aguarde...');
+        app.request.post("https://www.limeiraweb.com.br/mateus/php/recusarOrcamento.php",{
+          id_trabalho:idTrabalho,
+        },function(resposta){
+            app.dialog.close();
+            
+            // alert(resposta);
+            localStorage.removeItem("id_trabalho");
+            mainView.router.navigate({name:'perfil'});
+            localStorage.setItem("id_perfil", v_id);
+            
+        })
+      });
+    });
+
+    $("#interesse_pro").on("click", function(){
+      var idTrabalho = localStorage.getItem('id_trabalho');
+      app.dialog.preloader('Aguarde...');
+      app.request.post("https://www.limeiraweb.com.br/mateus/php/interesseOrcamento.php",{
+        id_trabalho:idTrabalho,
+      },function(resposta){
+          app.dialog.close();
+          
+          // alert(resposta);
+          localStorage.removeItem("id_trabalho");
+          app.dialog.alert("Você demostrou interesse nesse profissional, entre em contato com ele, ou aguarde até o profissional entrar em contato com você");
+          app.views.current.router.back();
+          verRespostaProfissional();
+          
+      })
+    });
+
   });
 }
 

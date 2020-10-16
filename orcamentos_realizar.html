@@ -1,10 +1,15 @@
 <div class="page" data-name="verOrcamentosPRO">
+    <div class="preload">
+        <div class="loader">
+          <img class="imageLoad" src="img/load.svg" alt="">
+        </div>
+    </div>
     <!-- Barra Superior -->
     <div class="navbar navbar-index">
         <div class="navbar-bg"></div>
         <div class="navbar-inner menu">
             <div class="left bg-black">
-                <a href="" class="link back">
+                <a href="" class="link back back-orcamento">
                     <i class="icon f7-icons"> arrow_left</i>                  
                 </a>
                 &nbsp;Orçamentos a realizar
@@ -12,11 +17,64 @@
         </div>
     </div>
     <!-- Fim NAV Bar -->
-    <div class="page-content orcamentos_realizar">
-        <div class="list media-list">
-            <ul id="orcamentoRealizar">
-
-            </ul>
-        </div>       
-    </div>
+    <div class="toolbar tabbar toolbar-bottom">
+        <div class="toolbar-inner">
+          <a href="#orcamento" class="tab-link tab-link-active">
+            <span class="material-icons">
+                list_alt
+            </span>
+          </a>
+          <a href="#aguardando" class="tab-link">
+            <span class="material-icons">
+                hourglass_top
+            </span>
+          </a>
+          <a href="#interesse" class="tab-link">
+            <span class="material-icons text-color-green">
+                check_circle
+            </span>
+          </a>
+          <a href="#recusados" class="tab-link">
+            <span class="material-icons text-color-red">
+                cancel
+            </span>
+          </a>
+        </div>
+    </div>  
+    <div class="tabs-animated-wrap">
+        <div class="tabs">
+            <div id="orcamento" class="page-content tab tab-active orcamentos_realizar">
+                <h2 class="text-align-center">Orçamentos para fazer</h2>
+                <div class="list media-list">
+                    <ul id="orcamentoRealizar">
+        
+                    </ul>
+                </div>  
+            </div>
+            <div id="aguardando" class="page-content tab orcamentos_realizar">
+                <h2 class="text-align-center">Aguardando resposta do cliente</h2>
+                <div class="list media-list">
+                    <ul id="aguardandoResposta">
+        
+                    </ul>
+                </div>  
+            </div>
+            <div id="interesse" class="page-content tab orcamentos_realizar">
+                <h2 class="text-align-center">Cliente mostraram interesse</h2>
+                <div class="list media-list">
+                    <ul id="orcamentoCliente-interesse">
+        
+                    </ul>
+                </div> 
+            </div>
+            <div id="recusados" class="page-content tab orcamentos_realizar">
+                <h2 class="text-align-center">Clientes recusaram</h2>
+                <div class="list media-list">
+                    <ul id="orcamentoCliente-recusados">
+        
+                    </ul>
+                </div> 
+            </div>
+        </div>
+    </div> 
 </div>

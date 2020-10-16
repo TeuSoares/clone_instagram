@@ -669,6 +669,22 @@ span.swiper-pagination-bullet{
 .orcamentos_realizar .list{
   margin: 10px!important;
 }
+.index .list-button {
+  padding: 2px!important;
+}
+.orcamento_cliente .card{
+  margin-left: 8px!important;
+  margin-right: 8px!important;
+}
+.recebe-background-interesse{
+  background-color: rgb(113 222 127 / 30%);
+}
+.recebe-background-recusado{
+  background-color: rgb(196, 48, 48,0.3);
+}
+.recebe-background-aguardando{
+  background-color: rgba(48, 174, 196, 0.3);
+}
 
 @media screen and (max-width:385px){
   .imagemPerfil {
