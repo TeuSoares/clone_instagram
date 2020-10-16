@@ -657,6 +657,18 @@ span.swiper-pagination-bullet{
   top: 2px;
   width: 13px;
 }
+.popover-inner .block{
+  margin: 10px!important;
+}
+.popover{
+  width: auto!important;
+}
+.font-title-anuncio i{
+  font-size: 15px!important;
+}
+.orcamentos_realizar .list{
+  margin: 10px!important;
+}
 
 @media screen and (max-width:385px){
   .imagemPerfil {

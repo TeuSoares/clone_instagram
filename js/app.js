@@ -104,7 +104,7 @@ var app = new Framework7({
       {
         name: 'perfil',
         path: '/perfil/',
-        url: 'perfil.html?b=x',
+        url: 'perfil.html?b=d',
         on:{
           pageInit:function(){
             pagePerfil();
@@ -188,17 +188,18 @@ var app = new Framework7({
         }, 
       },
       {
-        path: '/solicite-trabalho/',
-        url: 'solicite-trabalho.html?a=5',
+        path: '/orcamento/',
+        url: 'orcamento.html?a=5',
         on:{
           pageInit:function(){
             escuroON();
+            orcamento_solicitado();
           },
         }, 
       },
       {
-        path: '/trabalhos/',
-        url: 'trabalhos.html?a=5',
+        path: '/resposta_orcamento/',
+        url: 'resposta_orcamento.html?a=5',
         on:{
           pageInit:function(){
             escuroON();
@@ -262,6 +263,35 @@ var app = new Framework7({
           pageInit:function(){
             escuroON();
             painelADM();
+          },
+        }, 
+      },
+      {
+        path: '/anuncio/',
+        url: 'anuncio.html?a=b',
+        on:{
+          pageInit:function(){
+            pagePublicarAnuncio();
+          },
+        }, 
+      },
+      {
+        path: '/verAnuncio/',
+        url: 'verAnuncio.html?a=8',
+        on:{
+          pageInit:function(){
+            verAnuncio();
+            escuroON();
+          },
+        }, 
+      },
+      {
+        path: '/verOrcamentosPRO/',
+        url: 'orcamentos_realizar.html?a=8',
+        on:{
+          pageInit:function(){
+            escuroON();
+            verOrcamentosRealizar();
           },
         }, 
       },
@@ -580,6 +610,7 @@ function publicacoes(){
           url:"https://www.limeiraweb.com.br/mateus/php/publicacao_instagram.php",
           type:"POST",
           dataType:"json",
+          data: {id_usuario:idUsuario},
           success:function(resultado){
 
             closePreLoader();
@@ -591,7 +622,11 @@ function publicacoes(){
                   dados+='<div class="card-header">';
                     dados+='<div class="demo-facebook-avatar"><img src="https://www.limeiraweb.com.br/mateus/php/uploads/'+resultado[i].imagePerfil+'" width="100%"/></div>';
                     idUser = resultado[i].fk_id_usuario;
-                    if(resultado[i].tipoPerfil == "profissional"){
+                    if(resultado[i].tipoPerfil == "profissional" && resultado[i].tipoPublicacao == "anuncio"){
+                      dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a>&nbsp;<img src="img/diamond.png" class="imgDiamond2" /> - Anúncio patrocinado</div>';
+                    }else if(resultado[i].tipoPerfil == "adm" && resultado[i].tipoPublicacao == "anuncio"){
+                      dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a>&nbsp;<img src="img/tuxedo.png" class="imgDiamond2" /> - Anúncio patrocinado</div>';
+                    }else if(resultado[i].tipoPerfil == "profissional"){
                       dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a>&nbsp;<img src="img/diamond.png" class="imgDiamond2" /></div>';
                     }else if(resultado[i].tipoPerfil == "adm"){
                       dados+='<div class="demo-facebook-name bg-black"><a href="/perfil2/" onclick=setIDP("'+idUser+'")>'+resultado[i].nome+'</a>&nbsp;<img src="img/tuxedo.png" class="imgDiamond2" /></div>';
@@ -1375,17 +1410,17 @@ function pagePerfil(){
       escuroON();
 
       if(v_id == "1"){
-        $(".info-perfil,#avaliacao,.atividade-perfil").show();
+        $(".info-perfil,#avaliacao,.atividade-perfil,.anuncio").show();
         $(".perfilPRO").hide();
         $(".imgTuxedo").show();
         $(".imgDiamond").hide();
       }else if(dados[4]!=""){
-        $(".info-perfil,#avaliacao,.atividade-perfil").show();
+        $(".info-perfil,#avaliacao,.atividade-perfil,.anuncio").show();
         $(".perfilPRO").hide();
         $(".imgDiamond").show();
         $(".imgTuxedo").hide();
       }else{
-        $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+        $(".info-perfil,#avaliacao,.atividade-perfil,.anuncio").hide();
         $(".perfilPRO").show();
         $(".imgDiamond").hide();
         $(".imgTuxedo").hide();
@@ -1489,22 +1524,39 @@ function pagePerfil2(){
       inserirVisitantes();
     }
 
-    if(v_perfil == "1"){
+    if(v_perfil == "1" && v_id == "1"){
       $(".info-perfil,#avaliacao,.atividade-perfil").show();
       $("#editarPeril").show();
       $(".seguirP").hide();
       $(".seguindo").hide();
       $(".mensagem").hide();
-      $(".info-perfil,.link-avaliacao,.atividade-perfil").removeClass("col-50");
-      $(".info-perfil,.link-avaliacao,.atividade-perfil").addClass("col-33");
       $(".imgTuxedo").show();
       $(".imgDiamond").hide();
+      $(".orcamento").hide();
+    }else if(v_perfil == "1" && v_id != "1" && dados[4] !="" && dados[5] !=""){
+      $(".info-perfil,#avaliacao").show();
+      $("#editarPeril,.atividade-perfil").hide();
+      $(".seguirP").hide();
+      $(".seguindo").show();
+      $(".mensagem").show();
+      $(".imgTuxedo").show();
+      $(".imgDiamond").hide();
+      $(".orcamento").show();
+    }else if(v_perfil == "1" && v_id != "1"){
+      $(".info-perfil,#avaliacao").show();
+      $("#editarPeril,.atividade-perfil").hide();
+      $(".seguirP").show();
+      $(".seguindo").hide();
+      $(".mensagem").show();
+      $(".imgTuxedo").show();
+      $(".imgDiamond").hide();
+      $(".orcamento").show();
     }else if(dados[4] !="" && dados[5] !="" && dados[6] !=""){
       $("#editarPeril").hide();
       $(".seguirP").hide();
       $(".seguindo").show();
       $(".mensagem").show();
-      $(".info-perfil,#avaliacao").show();
+      $(".info-perfil,#avaliacao,.orcamento").show();
       $(".atividade-perfil").hide();
       $(".imgDiamond").show();
       $(".imgTuxedo").hide();
@@ -1513,7 +1565,7 @@ function pagePerfil2(){
       $(".seguirP").hide();
       $(".seguindo").show();
       $(".mensagem").show();
-      $(".info-perfil,#avaliacao").hide();
+      $(".info-perfil,#avaliacao,.orcamento").hide();
       $(".atividade-perfil").hide();
       $(".imgDiamond").hide();
       $(".imgTuxedo").hide();
@@ -1523,16 +1575,15 @@ function pagePerfil2(){
       $(".seguindo").hide();
       $(".mensagem").hide();
       $(".info-perfil,#avaliacao,.atividade-perfil").show();
-      $(".info-perfil,.link-avaliacao,.atividade-perfil").removeClass("col-50");
-      $(".info-perfil,.link-avaliacao,.atividade-perfil").addClass("col-33");
       $(".imgDiamond").show();
       $(".imgTuxedo").hide();
+      $(".orcamento").hide();
     }else if(v_id == v_perfil){
       $("#editarPeril").show();
       $(".seguirP").hide();
       $(".seguindo").hide();
       $(".mensagem").hide();
-      $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+      $(".info-perfil,#avaliacao,.atividade-perfil,.orcamento").hide();
       $(".imgDiamond").hide();
       $(".imgTuxedo").hide();
     }else{
@@ -1540,7 +1591,7 @@ function pagePerfil2(){
       $(".seguirP").show();
       $(".seguindo").hide();
       $(".mensagem").show();
-      $(".info-perfil,#avaliacao,.atividade-perfil").hide();
+      $(".info-perfil,#avaliacao,.atividade-perfil,.orcamento").hide();
       $(".imgDiamond").hide();
       $(".imgTuxedo").hide();
     }
@@ -2772,6 +2823,231 @@ function painelADM(){
       localStorage.setItem("id_perfil",id_adm)
     });
 
+  });
+}
+
+function pagePublicarAnuncio(){
+  $(document).ready(function(){
+    online();
+    perfilUsuario();
+    localStorage.removeItem('foto');
+    localStorage.removeItem('nomeFoto');
+
+    $('#foto').on('click',cameraApp);
+
+      function cameraApp(){
+          navigator.camera.getPicture(onSuccess, onFail,{
+              quality:100,
+              destinationType:Camera.DestinationType.FILE_URI,
+              saveToPhotoAlbum:true,  // bolean
+              sourceType:Camera.PictureSourceType.CAMERA,
+              mediaType:Camera.MediaType.PICTURE,	
+              encodingType:Camera.EncodingType.JPEG,
+              targetWidth:1080,
+              targetHeight:1080,
+              allowEdit:true,
+          });
+      }
+      
+      function onSuccess(foto) {
+          $('#imagem').attr('src',foto);
+          localStorage.setItem('foto',foto);
+          nomeFoto();
+      }
+      
+      function onFail(message) {
+          alert('Erro ao capturar a imagem: ' + message);
+      }
+
+      $('#galeria').on('click',galeria);
+  
+      function galeria(){
+          navigator.camera.getPicture(onSuccess, onFail,{
+              quality:100,
+              destinationType:Camera.DestinationType.FILE_URI,
+              sourceType:Camera.PictureSourceType.PHOTOLIBRARY,
+              mediaType:Camera.MediaType.PICTURE,	
+              targetWidth:1080,
+              targetHeight:1080,
+              allowEdit:true,
+          });
+      }
+      
+      function onSuccess(foto) {
+          $('#imagem').attr('src',foto);
+          localStorage.setItem('foto',foto);
+          nomeFoto();
+      }
+      
+      function onFail(message) {
+          alert('Erro ao capturar a imagem: ' + message);
+      }
+
+      escuroON();
+
+  });
+
+  $("#publicar").on("click",function(){
+
+    var idUusuario = localStorage.getItem("id_usuario");
+
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/verificar_anuncio.php', {id_usuario:idUusuario}, function(resposta){ 
+      dados = (resposta).split("|");
+      
+      if(dados[0] !=""){
+        app.dialog.alert("Você já publicou um anúncio hoje, volte amanhã e faça um novo anúncio","AVISO");
+      }else{
+        var legenda = $("#legenda").val();
+        var fotoPublic = localStorage.getItem('foto');
+        var nomeFoto = localStorage.getItem('nomeFoto');
+    
+        var id_usuario = localStorage.getItem('id_usuario');
+    
+        if(!fotoPublic){
+          app.dialog.alert("A publicação precisa de uma imagem","");
+          return false;
+        }
+    
+        app.dialog.preloader('Publicando...');
+    
+        // Gravando no servidor online
+        var options = new FileUploadOptions();
+    
+        options.fileKey = "file";
+        options.fileName = nomeFoto;
+        options.mimeType = "image/jpeg";
+    
+        var params = new Object();
+        params.value1 = legenda;
+        params.value2 = id_usuario;
+    
+        options.params = params;
+        options.chunkedMode = false;
+    
+        var ft = new FileTransfer();
+        ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insert_public_anuncio.php"),function(){
+    
+          setTimeout(function () {
+            app.dialog.alert("Anúncio publicado com sucesso!!","");
+            app.dialog.close();
+            fotoPublic = localStorage.removeItem('foto');
+            nomeFoto = localStorage.removeItem('nomeFoto');
+            mainView.router.navigate({name:'home'});
+            publicacoes();
+          }, 3000);
+    
+        },function(){
+    
+        },options);
+      }
+
+    });
+
+  });
+  escuroON();
+
+}
+
+function verAnuncio(){
+  $(document).ready(function(){
+    var v_id = localStorage.getItem("id_usuario");
+    app.request.post('https://www.limeiraweb.com.br/mateus/php/verAnuncio.php', {id_usuario:v_id}, function(resposta){ 
+      
+      $("#resultAnuncio").html(resposta);
+
+      closePreLoader();
+
+      $(document).on("click", ".imgAnuncio", function(){
+        var idPublic = $(this).attr('data');
+        localStorage.setItem('id_public', idPublic); 
+      });
+
+      $(document).on("click", ".repostarAnuncio", function(){
+        var idPublic2 = $(this).attr('data-confirm');
+        localStorage.setItem('id_anuncio', idPublic2);
+      });
+
+      $(document).on("click", ".excluirAnuncio", function(){
+        var idPublic3 = $(this).attr('data-excluir'); 
+        localStorage.setItem('id_anuncio', idPublic3);
+      });
+
+    });
+  });
+}
+
+function excluirAnuncio(){
+  $(document).ready(function(){
+    var idAnuncio = localStorage.getItem('id_anuncio');
+
+    app.dialog.confirm("Deseja remover esse anúncio?","",function(){
+      app.dialog.preloader('Excluindo...');
+      app.request.post("https://www.limeiraweb.com.br/mateus/php/excluirAnuncio.php",{
+        id_anuncio:idAnuncio,
+      },function(resposta){
+          app.dialog.close();
+          
+          localStorage.removeItem("id_anuncio");
+          verAnuncio();
+          
+      })
+    });
+  });
+}
+
+function repostarAnuncio(){
+  $(document).ready(function(){
+    var idAnuncio = localStorage.getItem('id_anuncio');
+
+    app.dialog.preloader('Repostando...');
+    app.request.post("https://www.limeiraweb.com.br/mateus/php/repostarAnuncio.php",{
+      id_anuncio:idAnuncio,
+    },function(resposta){
+        
+      setTimeout(function(){
+        app.dialog.close();
+        localStorage.removeItem("id_anuncio");
+        mainView.router.navigate({name:'home'});
+        publicacoes();
+      },1000);
+        
+    })
+  });
+}
+
+function orcamento_solicitado(){
+  $(document).ready(function(){
+    $("#inserir-orçamento").on("click", function(){
+      var v_id = localStorage.getItem('id_usuario');
+      var idPRO = localStorage.getItem('id_perfil');
+      var v_trabalho = $("#orçamento").val();
+  
+      app.dialog.preloader('Enviando...');
+      app.request.post("https://www.limeiraweb.com.br/mateus/php/insert_orcamento_cliente.php",{
+        id_usuario:v_id,id_perfil:idPRO,trabalho_solicitado:v_trabalho,
+      },function(resposta){
+          
+        setTimeout(function(){
+          app.dialog.close();
+          mainView.router.navigate({name:'perfil'});
+        },1000);
+          
+      })
+    });
+  });
+}
+
+function verOrcamentosRealizar(){
+  $(document).ready(function(){
+    var id = localStorage.getItem('id_usuario');
+
+    app.request.post("https://www.limeiraweb.com.br/mateus/php/verOrcamento_realizar.php",{
+      id_usuario:id,
+    },function(resposta){
+        
+      $("#orcamentoRealizar").html(resposta);
+        
+    })
   });
 }
 
