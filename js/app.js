@@ -21,7 +21,7 @@ var app = new Framework7({
       {
         name: 'login',
         path: '/login/',
-        url: 'login.html?a=7',
+        url: 'login.html?a=5',
         on:{
           pageInit:function(){
             pageLogin();
@@ -104,7 +104,7 @@ var app = new Framework7({
       {
         name: 'perfil',
         path: '/perfil/',
-        url: 'perfil.html?b=5',
+        url: 'perfil.html?b=3',
         on:{
           pageInit:function(){
             pagePerfil();
@@ -401,6 +401,7 @@ function escuroON(){
       $(".atividade-li .list li").css("border-bottom","1px solid rgb(255,255,255,0.1)");
       $(".swiper-pagination-bullet").css({"background-color":"white"});
       $(".sair").css("border-top","1px solid rgb(255,255,255,0.2)");
+      $(".black-font").addClass("text-color-white");
     }else{
       $(".bg").removeClass("theme-dark");
       $(".bg-black").removeClass("bg-white");
@@ -428,6 +429,7 @@ function escuroON(){
       $(".preload").css({"background-color":"#ffffff"});
       $('.imageLoad').attr('src',"img/load.svg");
       $(".sair").css("border-top","1px solid rgb(0,0,0,0.2)");
+      $(".black-font").removeClass("text-color-white");
     }
   });
 
@@ -3092,6 +3094,8 @@ function verOrcamentosRealizar(){
         localStorage.setItem('id_trabalho', trabalho); 
         localStorage.setItem('id_perfil', cliente); 
       });
+
+      escuroON();
         
     })
 
@@ -3121,6 +3125,8 @@ function resultOrcamentoCliente(){
       }else{
         $(".button-profissional").show();
       }
+
+      escuroON();
         
     })
   });
@@ -3174,6 +3180,7 @@ function verRespostaProfissional(){
         localStorage.setItem('id_perfil', pro); 
       });
         
+      escuroON();
     })
 
     $(".back-orcamento").on("click", function(){
@@ -3202,6 +3209,8 @@ function solicitacao_orcamento(){
       }else{
         $(".button-profissional").show();
       }
+
+      escuroON();
         
     })
 
