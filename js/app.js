@@ -76,7 +76,7 @@ var app = new Framework7({
       },
       {
         path: '/update/',
-        url: 'update_usuario.html?b=4',
+        url: 'update_usuario.html?b=5',
         on:{
           pageInit:function(){
             pageUpdate();
@@ -169,7 +169,7 @@ var app = new Framework7({
       },
       {
         path: '/perfilProfissional/',
-        url: 'perfil-profissional.html?a=7',
+        url: 'perfil-profissional.html?a=5',
         on:{
           pageInit:function(){
             escuroON();
@@ -528,7 +528,7 @@ function pageLogin(){
 function pageCadastro(){
   $(document).ready(function(){
 
-    $("#celular").mask("(00) 0000-0000");
+    $("#celular").mask("(00) 00000-0000");
 
     $("#cadastrar").on('click',function(e){
       e.preventDefault();
@@ -1593,7 +1593,16 @@ function pagePerfil2(){
       $(".atividade-perfil").hide();
       $(".imgDiamond").show();
       $(".imgTuxedo").hide();
-    }else if(dados[4] !="" && dados[5]){
+    }else if(dados[4] == "" && dados[5] == "" && dados[6] !=""){
+      $("#editarPeril").hide();
+      $(".seguirP").show();
+      $(".seguindo").hide();
+      $(".mensagem").show();
+      $(".info-perfil,#avaliacao,.orcamento").show();
+      $(".atividade-perfil").hide();
+      $(".imgDiamond").show();
+      $(".imgTuxedo").hide();
+    }else if(dados[4] !="" && dados[5] !=""){
       $("#editarPeril").hide();
       $(".seguirP").hide();
       $(".seguindo").show();
@@ -1775,6 +1784,7 @@ function pageUpdate(){
       $('#imagemUser').attr('src',dados[4]);
       $("#nomeFoto").val(dados[5]);
       $("#celular_u").val(dados[6]);
+      $("#fotoPublic").val(dados[4]);
 
       if(dados[13] == undefined || dados[13] == "" || dados[13] == null){
         $(".telefone,.rua,.bairro,.cidade,.site,.numero").hide();
@@ -1864,9 +1874,12 @@ function pageUpdate(){
       var fotoPublic = localStorage.getItem('foto_perfil');
       var nomeFoto = localStorage.getItem('nomeFoto_perfil');
 
-      if(nomeFoto == null){
+      if(nomeFoto == null && fotoPublic == null){
         var nomeFoto = $("#nomeFoto").val();
+        var fotoPublic = $("#fotoPublic").val();
       }
+
+      // alert(nomeFoto)
 
       // alert(telefone_u+"<br>"+numero2+"<br>"+item2)
 
@@ -2341,8 +2354,6 @@ function avaliacao(){
         },1000);
       }
 
-      $(".notaAV").html(dados[2]);
-
       if(dados[3] == undefined || dados[3] == "" || dados[3] == 0){
         result_star5 = "";
         result_star4 = ""; 
@@ -2350,7 +2361,9 @@ function avaliacao(){
         result_star2 = "";
         result_star1 = "";
         $(".TotalAV").html("0 Avaliações");
+        $(".notaAV").html("0");
       }else{
+        $(".notaAV").html(dados[2]);
         $(".TotalAV").html(dados[3]+" Avaliações");
         conta5 = 100 * dados[9];
         result_star5 = conta5 / dados[3];

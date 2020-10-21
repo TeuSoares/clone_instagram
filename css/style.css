@@ -685,6 +685,9 @@ span.swiper-pagination-bullet{
 .recebe-background-aguardando{
   background-color: rgba(48, 174, 196, 0.3);
 }
+.sheet-modal {
+  height: 320px!important;
+}
 
 @media screen and (max-width:385px){
   .imagemPerfil {
