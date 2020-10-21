@@ -43,7 +43,7 @@ while($registro = mysqli_fetch_array($resultado)){
 				<div class='item-inner bg-black'>
 					<a href='/solitacaoOrcamentos/' class='verOrcamento' data-orcamento='$orcamentoPRO' data-profissional='$fk_id_profissional'>
 						<div class='item-title'>
-							$nome
+							<span class='black-font'>$nome</span>
 							<em class='data-comentario'>$data_formatNova</em>
 						</div>
 						<div class='item-text verOrcamento'>$orcamento</div>
@@ -74,7 +74,7 @@ while($registro2 = mysqli_fetch_array($resultado2)){
     $data_formatNova = $data_format[2].'/'.$data_format[1].'/'.$data_format[0];
 
     $lista2.="
-        <li class='recebe-background'>
+        <li class='recebe-background-interesse'>
             <div class='item-link item-content setIdComentario fkUser'>
                 <div class='item-media bg-black'>
                     <a href='#' class='imgPerfil'>

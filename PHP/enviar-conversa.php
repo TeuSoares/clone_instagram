@@ -17,7 +17,4 @@ $SQLinsert = "INSERT INTO chat(fk_id_usuario,fk_id_perfil,conversa,data,hora,env
 $operacao = $conexao->prepare($SQLinsert);
 $inserir = $operacao->execute(array($id_usuario,$id_perfil,$conversa,$data,$hora,$id_usuario,$id_perfil));
 
-$operacao2 = $conexao->prepare("UPDATE usuarios_instagram SET fk_usuario=$id_usuario WHERE id_usuario=$id_usuario "); 
-$operacao2->execute();
-
 ?>

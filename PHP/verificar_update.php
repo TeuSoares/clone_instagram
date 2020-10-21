@@ -6,10 +6,10 @@ header("Access-Control-Allow-Origin:*");
 include ("conf/conexao.php");
 $conexao = con_mysql();
 
-$nome = 'gggggg';
-$email = 'dsfgsdfgfsd';
-$usuario = 'andresantos';
-$email_instagram = "mateussoas@hotmail.com";
+$nome = $_POST['nome'];
+$email = $_POST['email'];
+$usuario = $_POST['usuario'];
+$email_instagram = $_POST['email_instagram'];
 
 // Verificando se email já existe
 $operacao = $conexao->prepare("SELECT email from usuarios_instagram WHERE email = '$email' "); 

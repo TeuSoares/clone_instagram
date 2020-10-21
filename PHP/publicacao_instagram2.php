@@ -4,8 +4,7 @@ header("Access-Control-Allow-Origin:*");
 // Incluir conexao
 include ("funcoes.php");
 
-$nameLike = "";
-$fk_public = "";
+
 $sql2 = "SELECT publicacao_instagram.id_publicInsta,usuarios_instagram.nome,curtidas.curtida,curtidas.fk_id_publicacao
 FROM publicacao_instagram
 INNER JOIN curtidas
@@ -17,11 +16,10 @@ $resultado2 = $conexao->query($sql2);
 while($registro2 = mysqli_fetch_array($resultado2)){
     $likes = $registro2["curtida"];
     $nome = $registro2["nome"];
-    $fk_id_public = $registro2["fk_id_publicacao"];
+	$fk_id_public = $registro2["fk_id_publicacao"];
 
-    $nameLike.= $nome;
+    $nameLike = $nome;
     $like = $likes;
-    $fk_public.=$fk_id_public;
 }
 
 $lista = "";
@@ -48,7 +46,7 @@ while($registro = mysqli_fetch_array($resultado)){
     $imagePerfil = $registro["imagePerfil"];
     $data = $registro["dataPublicacao"];
 
-    if($fk_public == $id_publicInsta){
+    if($fk_id_public == $id_publicInsta){
         $verLike = "<div class='likeUser margin-left'>
         Curtido por <strong class='black red'><a href='/perfil/'>$nameLike</a></strong>
          e <strong class='black red'><a href='/curtidas/' onclick=setPublic($id_publicInsta);>outras pessoas</a></strong>
@@ -86,7 +84,7 @@ while($registro = mysqli_fetch_array($resultado)){
 }
 
 
-echo "$lista|$fk_public";
+echo $lista;
  //print_r($resposta);
 ?>
         <!-- if(cod_usuario == resultado[i].fk_id_usuario){

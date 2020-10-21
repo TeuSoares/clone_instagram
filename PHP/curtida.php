@@ -8,6 +8,7 @@ $conexao = con_mysql();
 
 $id_public = $_POST["id_public"];   
 $id_usuario = $_POST["id_usuario"];
+$user_insta = $_POST["user_insta"];
 
 $operacao = $conexao->prepare("SELECT fk_id_usuario,fk_id_publicacao from curtidas 
 WHERE fk_id_publicacao = $id_public and fk_id_usuario = $id_usuario "); 
@@ -19,7 +20,7 @@ if($resultado > 0){
     $SQL = "";
     $mensagem = "Existe";
 }else{
-    $SQL = "INSERT INTO curtidas (fk_id_usuario,fk_id_publicacao,curtida) VALUES ($id_usuario,$id_public,1) ";
+    $SQL = "INSERT INTO curtidas (usuario_like,fk_id_usuario,fk_id_publicacao,curtida) VALUES ('$user_insta',$id_usuario,$id_public,1) ";
     $mensagem = "Você acabou de curtir essa publicação";
 }
 

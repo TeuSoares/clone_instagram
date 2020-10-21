@@ -8,9 +8,11 @@ $conexao = con_mysql();
 
 $nome = $_POST['nome'];
 $email = $_POST['email'];
+$celular = $_POST['celular'];
 $senha = MD5($_POST['senha']);
+$imageCadastrado = "user_cadastrado.png";
+$tipoPerfil = "pessoal";
 
-// Verificando se email já existe
 $operacao = $conexao->prepare("SELECT email from usuarios_instagram WHERE email = '$email' "); 
 $operacao->execute();
 $resultado = $operacao->rowCount();
@@ -26,9 +28,9 @@ if($resultado > 0 and $resultado2 > 0){
 }else if($resultado > 0){
     echo "existe";
 }else{
-    $SQLinsert = "INSERT INTO usuarios_instagram(nome,email,senha) VALUES(?,?,?) ";
+    $SQLinsert = "INSERT INTO usuarios_instagram(nome,email,celular,senha,imagePerfil,tipoPerfil) VALUES(?,?,?,?,?,?) ";
     $operacao = $conexao->prepare($SQLinsert);
-    $inserir = $operacao->execute(array($nome,$email,$senha));
+    $inserir = $operacao->execute(array($nome,$email,$celular,$senha,$imageCadastrado,$tipoPerfil));
 
     echo "Cadastrado";
 }

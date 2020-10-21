@@ -634,6 +634,9 @@ function publicacoes(){
       var idP = localStorage.getItem('id_public');
       var idUsuario = localStorage.getItem('id_usuario');
 
+      localStorage.removeItem("foto_perfil");
+      localStorage.removeItem("nomeFoto_perfil");
+
       online();
 
       perfilUsuario();
@@ -1770,38 +1773,40 @@ function verSeguidores2(){
 
 function pageUpdate(){
   online();
-
-    // Faz os carregamentos dos dados para edição
-    var v_id = localStorage.getItem('id_usuario');
-    // app.dialog.alert("Formulario - Recuperei: " + v_id);
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/perfilUser.php', {id_usuario: v_id}, function(resposta){
-      dados = (resposta).split('|');
-      closePreLoader();
-      $("#nome").val(dados[0]); 
-      $("#user").val(dados[1]);  
-      $("#email").val(dados[2]);
-      $("#bio").val(dados[3]); 
-      $('#imagemUser').attr('src',dados[4]);
-      $("#nomeFoto").val(dados[5]);
-      $("#celular_u").val(dados[6]);
-      $("#fotoPublic").val(dados[4]);
-
-      if(dados[13] == undefined || dados[13] == "" || dados[13] == null){
-        $(".telefone,.rua,.bairro,.cidade,.site,.numero").hide();
-      }else{
-        $("#telefone_u").val(dados[7]);
-        $("#rv").val(dados[8]);
-        $("#bairro").val(dados[9]);
-        $("#numero_casa").val(dados[10]);
-        $("#cidade_autocomplete").val(dados[11]);
-        $("#site").val(dados[12]);
-      }
-
-      escuroON();
-    });  
     
     // Função do recurso de câmera
     $(document).ready(function(){
+
+      var v_id = localStorage.getItem('id_usuario');
+    
+      app.request.post('https://www.limeiraweb.com.br/mateus/php/perfilUser.php', {id_usuario: v_id}, function(resposta){
+        dados = (resposta).split('|');
+        closePreLoader();
+        $("#nome").val(dados[0]); 
+        $("#user").val(dados[1]);  
+        $("#email").val(dados[2]);
+        $("#bio").val(dados[3]); 
+        $('#imagemUser').attr('src',dados[4]);
+        $("#nomeFoto").val(dados[5]);
+        $("#celular_u").val(dados[6]);
+        $("#fotoPublic").val(dados[4]);
+  
+        if(dados[13] == undefined || dados[13] == "" || dados[13] == null){
+          $(".telefone,.rua,.bairro,.cidade,.site,.numero").hide();
+        }else{
+          $("#telefone_u").val(dados[7]);
+          $("#rv").val(dados[8]);
+          $("#bairro").val(dados[9]);
+          $("#numero_casa").val(dados[10]);
+          $("#cidade_autocomplete").val(dados[11]);
+          $("#site").val(dados[12]);
+        }
+  
+        // localStorage.setItem("foto_perfil",dados[4]);
+        localStorage.setItem("nomeFoto_perfil",dados[5]);
+  
+        escuroON();
+      });  
 
       $("#celular_u").mask("(00) 00000-0000");
       $("#telefone_u").mask("(00) 00000-0000");
@@ -1873,11 +1878,6 @@ function pageUpdate(){
       var numero2 = $("#numero_casa").val();
       var fotoPublic = localStorage.getItem('foto_perfil');
       var nomeFoto = localStorage.getItem('nomeFoto_perfil');
-
-      if(nomeFoto == null && fotoPublic == null){
-        var nomeFoto = $("#nomeFoto").val();
-        var fotoPublic = $("#fotoPublic").val();
-      }
 
       // alert(nomeFoto)
 
@@ -2032,6 +2032,8 @@ function pageUpdate(){
 
     $(".back-update").on("click", function(){
       pagePerfil();
+      localStorage.removeItem("foto_perfil");
+      localStorage.removeItem("nomeFoto_perfil");
     }); 
 
 

@@ -12,11 +12,12 @@ $id_perfil = $_POST["id_perfil"];
 $operacao = $conexao->prepare("SELECT usuarios_instagram.nome,usuarios_instagram.imagePerfil,chat.*,
 CONCAT(DAY(data), ' de ' ,ELT(MONTH(data), 'Jan', 'Fev',
 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Agos', 
-'Set', 'Out', 'Nov', 'Dez'), ' às ', hora) as dataFormat
+'Set', 'Out', 'Nov', 'Dez'), ' às ',DATE_FORMAT(hora, '%H:%i')) as dataFormat
  FROM chat
 INNER JOIN usuarios_instagram
 ON chat.enviou = id_usuario
-WHERE fk_id_usuario = $id_usuario and fk_id_perfil = $id_perfil"); 
+WHERE fk_id_usuario = $id_usuario and fk_id_perfil = $id_perfil or fk_id_usuario = $id_perfil and fk_id_perfil = $id_usuario
+ORDER BY dataFormat ASC"); 
 $operacao->execute();
 
 while($resultado = $operacao->fetch(PDO::FETCH_ASSOC)){

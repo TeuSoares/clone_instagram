@@ -8,20 +8,12 @@ include ("funcoes.php");
 $id_trabalho = $_POST["id_trabalho"]; 
 
 $SQL = "UPDATE orcamento_realizado SET visualizacaoCliente='0',situacao='Recusado' WHERE id_orcamento = $id_trabalho and situacao = 'Aguardando' "; 
-$SQL2 = "UPDATE orcamento_solicitadocliente SET situacao='Recusar' WHERE id_orcamento = $id_trabalho and situacao = 'Aguardando' "; 
 
 if($conexao->query($SQL)){
     echo $SQL;
 }else{
     //echo "Não foi possível realizar seu comentário. Tente novamente mais tarde!!";
     echo $SQL;
-}
-
-if($conexao->query($SQL2)){
-    echo $SQL2;
-}else{
-    //echo "Não foi possível realizar seu comentário. Tente novamente mais tarde!!";
-    echo $SQL2;
 }
 
 ?>

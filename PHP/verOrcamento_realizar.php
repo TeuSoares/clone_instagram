@@ -17,7 +17,7 @@ $data_formatNova = "";
 $sql = "SELECT * FROM orcamento_solicitadocliente 
 INNER JOIN usuarios_instagram
 ON orcamento_solicitadocliente.fk_id_usuario = id_usuario
-WHERE fk_id_profissional = $id_usuario";
+WHERE fk_id_profissional = $id_usuario and andamento = 'Esperando'";
 $resultado = $conexao->query($sql);
 
 while($registro = mysqli_fetch_array($resultado)){
@@ -44,7 +44,7 @@ while($registro = mysqli_fetch_array($resultado)){
                 </div>
 				<div class='item-inner bg-black'>
 					<a href='/orcamento_cliente/' class='verTrabalho_socilitado' data-trabalho='$orcamentoCliente' data-cliente='$fk_id_usuario'>
-						<div class='item-title'>
+						<div class='item-title black-font'>
 							$nome
 							<em class='data-comentario'>$data_formatNova</em>
 						</div>
@@ -77,8 +77,8 @@ while($registr1 = mysqli_fetch_array($resultado1)){
     $data_format = explode('-', $data);
     $data_formatNova = $data_format[2].'/'.$data_format[1].'/'.$data_format[0];
 
-    $list1.="
-        <li class='recebe-background'>
+    $lista1.="
+        <li class='recebe-background-aguardando'>
             <div class='item-link item-content setIdComentario fkUser'>
                 <div class='item-media bg-black'>
                     <a href='#' class='imgPerfil' data-usuario='$fk_id_usuario'>
@@ -122,8 +122,8 @@ while($registr2 = mysqli_fetch_array($resultado2)){
     $data_format = explode('-', $data);
     $data_formatNova = $data_format[2].'/'.$data_format[1].'/'.$data_format[0];
 
-    $list2.="
-        <li class='recebe-background'>
+    $lista2.="
+        <li class='recebe-background-interesse'>
             <div class='item-link item-content setIdComentario fkUser'>
                 <div class='item-media bg-black'>
                     <a href='#' class='imgPerfil' data-usuario='$fk_id_usuario'>
@@ -167,8 +167,8 @@ while($registr3 = mysqli_fetch_array($resultado3)){
     $data_format = explode('-', $data);
     $data_formatNova = $data_format[2].'/'.$data_format[1].'/'.$data_format[0];
 
-    $list3.="
-        <li class='recebe-background'>
+    $lista3.="
+        <li class='recebe-background-recusado'>
             <div class='item-link item-content setIdComentario fkUser'>
                 <div class='item-media bg-black'>
                     <a href='#' class='imgPerfil' data-usuario='$fk_id_usuario'>

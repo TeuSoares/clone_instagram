@@ -3,15 +3,22 @@
 header("Access-Control-Allow-Origin:*");
 
 // Incluir conexao
-include ("funcoes.php");
+include("funcoes.php");
 
 $id_perfil = $_POST["id_perfil"];
+$id_usuario = $_POST["id_usuario"];
 
 $lista = "";
+$bioUser = "";
+$popPerfil = "";
 
-$sql = "SELECT *,COUNT(seguindo) as seguindo FROM usuarios_instagram
-INNER JOIN seguidores
+$sql = "SELECT perfil_profissional.*,usuarios_instagram.*,COUNT(seguindo) as seguindo,cidades.cidade,cidades.uf FROM usuarios_instagram
+LEFT JOIN seguidores
 ON seguidores.fk_id_usuario = id_usuario
+LEFT JOIN perfil_profissional
+ON perfil_profissional.fk_id_usuario = id_usuario
+LEFT JOIN cidades
+ON perfil_profissional.cidade = codigo
 WHERE id_usuario = $id_perfil;";
 $resultado = $conexao->query($sql);
 
@@ -19,71 +26,201 @@ while($registro = mysqli_fetch_array($resultado)){
     $nome = $registro["nome"];
     $user = $registro["nomeUser"];
     $bio = $registro["bio"];
+    $celular = $registro["celular"];
+	$email = $registro["email"];
+	$telefone = $registro["telefone"];
+	$rv = $registro["rua_avenida"];
+	$numero = $registro["numero"];
+	$bairro = $registro["bairro"];
+	$site = $registro["site"];
+	$cidade = $registro["cidade"];
+	$uf = $registro["uf"];
     $imagem = $registro["imagePerfil"];
     $seguindo = $registro["seguindo"];
+	$categoria = $registro["categoria"];
+	$tipoPerfil = $registro["tipoPerfil"];
 
-    $verImage = "<img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagem'>";
+	$verImage = "<img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagem'>";
+	
+	if($bio == "" and $user == ""){
+		$bioUser = "";
+	}else{
+		$bioUser = "<div class='bioUser'>
+						<span><strong>$user</strong></span>
+						<br>
+						<span>$bio</span>
+					</div>";
+	}
+	
+	if($tipoPerfil == "profissional"){
+		$popPerfil = "<div class='popover popover-about'>
+				<div class='popover-inner'>
+				  <div class='block'>
+					<p>Esse é um perfil profissional!!</p>
+				  </div>
+				</div>
+			 </div>";
+	}else if($tipoPerfil == "adm"){
+		$popPerfil = "<div class='popover popover-about'>
+				<div class='popover-inner'>
+				  <div class='block'>
+					<p>Esse perfil é de um ADM</p>
+				  </div>
+				</div>
+			 </div>";
+	}else{
+		$popPerfil = "";
+	}
 
     $lista.="
-        <div class='block margin-0-perfil'>
-            <p class='p-insta'><strong>$nome</strong></p>
+        <div class='block margin-0-perfil popover-perfil'>
+             <p class='p-insta'><strong>$nome</strong>&nbsp;<img src='img/diamond.png' class='imgDiamond popover-open' data-popover='.popover-about' /><img src='img/tuxedo.png' class='imgTuxedo popover-open' data-popover='.popover-about' /><p>
+			 $popPerfil
             <div class='display-flex'>
-                <div class='imagemPerfil'>
+                <div class='col-25 imagemPerfil'>
                     $verImage
                 </div>
-                <div class='block text-align-center'>
-                <strong class='strongPerfil' id='quantidadePublic2'></strong>
+                <div class='margin-perfil text-align-center'>
+                <strong class='col-25 strongPerfil block' id='quantidadePublic2'></strong>
                 <span>Publicações</span>
                 </div>
-                <div class='block text-align-center'>
-                <strong class='strongPerfil numberSeguidores2'>247</strong>
-                <span><a href='/seguidores/' class='text-color-black' id='verSeguidor'>Seguidores</a></span>
+                <div class='margin-perfil text-align-center'>
+                <strong class='col-25 strongPerfil block' id='numberSeguidores2'></strong>
+                <span class='bg-black'><a href='/seguidores2/' id='verSeguidor'>Seguidores</a></span>
                 </div>
-                <div class='block text-align-center'>
-                <strong class='strongPerfil'>$seguindo</strong>
-                <span><a href='/seguidores/' class='text-color-black' id='verSeguindo'>Seguindo</a></span>
+                <div class='margin-perfil text-align-center'>
+                <strong class='col-25 strongPerfil block'>$seguindo</strong>
+                <span class='bg-black'><a href='/seguidores2/' id='verSeguindo'>Seguindo</a></span>
                 </div>
             </div>
             <br>
-            <span><strong>Mateus Santos</strong></span>
-            <br>
-            <span>$bio</span>
-            <br>
-            <p>
-                <a href='/update/'><button class='col button button-small button-outline text-color-black color-black' id='editarPeril'>Editar perfil</button></a>
-                <button class='col button button-small button-outline text-color-black color-black seguirP'>Seguir</button>
-                <button class='col button button-small button-outline text-color-black color-black seguindo'>Seguindo</button>
-            </p>
+			$bioUser
+			    <a href='/update/'><button class='col button button-small button-outline button-noturno text-color-black color-black' id='editarPeril'>Editar perfil</button></a>
+				<div class='row'>
+				    <button class='col-50 button button-small button-outline button-noturno text-color-black color-black seguirP'>Seguir</button>
+                	<button class='col-50 button button-small button-outline button-noturno text-color-black color-black seguindo'>Seguindo</button>
+					<a href='/chat/' class='col-50'><button class='button button-small button-outline button-noturno text-color-black color-black mensagem'>mensagem</button></a>
+				</div>
+				<p class='row button-perfil-pro margin-top'>
+                	<button class='col-33 button button-small button-outline button-noturno text-color-black color-black info-perfil sheet-open' data-sheet='.my-sheet-push'>Informações</button>
+					<a href='/avaliacao/' class='col-33 link-avaliacao'><button class='button button-small button-outline button-noturno text-color-black color-black' id='avaliacao'>Avaliação</button></a>
+					<a href='/orcamento/' class='col-33 link-avaliacao orcamento'><button class='button button-small button-outline button-noturno text-color-black color-black'>Orçamento</button></a>
+                	<a href='/atividade/' class='col-33 link-avaliacao'><button class='button button-small button-outline button-noturno text-color-black color-black atividade-perfil'>Atividade</button></a>
+            	</p>
         </div>
+		
+		                <div class='sheet-modal sheet-modal-push my-sheet-push'>
+					   <div class='toolbar'>
+						  <div class='toolbar-inner'>
+							<div class='left'></div>
+							<div class='right'>
+							  <a class='link sheet-close'><i class='f7-icons'>xmark_circle_fill</i></a>
+							</div>
+						  </div>
+						</div>
+                        <div class='sheet-modal-inner'>
+                          <div class='page-content'>
+                            <div class='list media-list'>
+                                <ul>
+                                  <h2 class='margin-left'>Informações de contato</h2>
+								  <li>
+                                    <div class='item-content'>
+                                      <div class='item-media'><i class='f7-icons'>person_alt_circle_fill</i></div>
+                                      <div class='item-inner'>
+                                        <div class='item-title-row'>
+                                          <div class='item-title'>Categoria</div>
+                                        </div>
+                                        <div class='item-subtitle'>$categoria</div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div class='item-content telefone'>
+                                      <div class='item-media'><i class='f7-icons'>phone_fill</i></div>
+                                      <div class='item-inner'>
+                                        <div class='item-title-row'>
+                                          <div class='item-title'>Telefone</div>
+                                        </div>
+                                        <div class='item-subtitle'>$telefone</div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div class='item-content'>
+                                      <div class='item-media'><i class='f7-icons'>device_phone_portrait</i></div>
+                                      <div class='item-inner'>
+                                        <div class='item-title-row'>
+                                          <div class='item-title'>Celular</div>
+                                        </div>
+                                        <div class='item-subtitle'>$celular</div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div class='item-content'>
+                                      <div class='item-media'><i class='f7-icons'>envelope_fill</i></div>
+                                      <div class='item-inner'>
+                                        <div class='item-title-row'>
+                                          <div class='item-title'>E-mail</div>
+                                        </div>
+                                        <div class='item-subtitle'>$email</div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                  <li class='site'>
+                                    <div class='item-content'>
+                                      <div class='item-media'>
+                                        <span class='material-icons'>
+                                          public
+                                        </span>
+                                      </div>
+                                      <div class='item-inner'>
+                                        <div class='item-title-row'>
+                                          <div class='item-title link-site'>Site</div>
+                                        </div>
+                                        <div class='item-subtitle'><a href='#'>$site</a></div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div class='item-content endereco'>
+                                      <div class='item-media'>
+                                        <i class='f7-icons'>house</i>
+                                      </div>
+                                      <div class='item-inner'>
+                                        <div class='item-title-row'>
+                                          <div class='item-title'>Endereço</div>
+                                        </div>
+                                        <div class='item-subtitle'>Rua/Avenida: $rv</div>
+                                        <div class='item-subtitle'>Número: $numero</div>
+                                        <div class='item-subtitle'>Bairro: $bairro</div>
+                                        <div class='item-subtitle'>Cidade: $cidade/$uf</div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
     ";
 
 }
 
-$sql2 = "SELECT * FROM publicacao_instagram WHERE fk_id_usuario=$id_perfil";
+$sql2 = "SELECT * FROM publicacao_instagram WHERE fk_id_usuario=$id_perfil and tipoPublicacao = 'normal'";
 $resultado2 = $conexao->query($sql2);
 
+$public = "";
 while($registro2 = mysqli_fetch_array($resultado2)){
     $id_public = $registro2["id_publicInsta"];
     $fk_id_usuario = $registro2["fk_id_usuario"];
-    $imagem = $registro2["imagePerfil"];
+    $imagem = $registro2["imagem"];
 
-    $verImage = "<img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagem'>";
+    $verImage = "<img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagem' width='100%'>";
 
     $public.="
-        <div class='photos-col wrap'>
         <div class='img-publiP'><a href='/public/' class='setPublic' data='$id_public'>$verImage</a></div>
-        </div>
     ";
-
-    $photoGalery.="<div class='photo-browser-swiper-container swiper-container swiper-container-virtual swiper-container-initialized swiper-container-horizontal swiper-container-ios'>
-        <div class='photo-browser-swiper-wrapper swiper-wrapper'>
-        
-        <div class='photo-browser-slide photo-browser-object-slide swiper-slide swiper-slide-active' data-swiper-slide-index='0' style='left: 0px; width: 414px; margin-right: 20px;'>
-            <img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagem' width='100%' height='auto'>
-        </div>
-        </div>
-        <span class='swiper-notification' aria-live='assertive' aria-atomic='true'></span>
-    </div>";
 
 }
 
@@ -112,14 +249,30 @@ while($registro4 = mysqli_fetch_array($resultado4)){
 }
 
 $mensagem = "";
+$fkUser = "";
+$seguindoUser = "";
 $sql5 = "SELECT fk_id_usuario,seguindo from seguidores 
-WHERE fk_id_usuario = 1 and seguindo = 2 ";
+WHERE fk_id_usuario = $id_usuario and seguindo = $id_perfil ";
 $resultado5 = $conexao->query($sql5);
 
+while($registro5 = mysqli_fetch_array($resultado5)){
+	
+	$fkUser = $registro5["fk_id_usuario"];
+	$seguindoUser = $registro5["seguindo"];
 
+}
 
-echo "$lista|$public|$seguidores|$quantidade|$mensagem|$resultado5";
+$fk_user2 = "";
+$sql6 = "SELECT fk_id_usuario FROM perfil_profissional
+WHERE fk_id_usuario = $id_perfil";
+$resultado6 = $conexao->query($sql6);
 
-?>
+while($registro6 = mysqli_fetch_array($resultado6)){
+
+    $fk_user2 = $registro6["fk_id_usuario"];
+
+}
+mysqli_close($conexao);
+echo "$lista|$public|$seguidores|$quantidade|$fkUser|$seguindoUser|$fk_user2|$site|$telefone|$celular|$rv|$cidade";
 
 ?>

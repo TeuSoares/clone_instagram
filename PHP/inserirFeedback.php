@@ -1,6 +1,7 @@
 <?php
 header("Content-type: application/json");
 header("Access-Control-Allow-Origin:*");
+date_default_timezone_set('America/Sao_Paulo');
 
 // Incluir conexao
 include ("conf/conexao.php");

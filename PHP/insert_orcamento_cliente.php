@@ -8,13 +8,14 @@ include ("conf/conexao.php");
 $conexao = con_mysql();
 
 $id_usuario = $_POST["id_usuario"];
-$fk_id_profissional = $_POST["id_perfil"];
+$id_perfil = $_POST["id_perfil"];
 $trabalho_solicitado = $_POST["trabalho_solicitado"];
 $data = date("Y-m-d");
+$andamento = "Esperando";
 
-move_uploaded_file($_FILES["file"]["tmp_name"],"../php/uploads/".$nomeFoto);
-
-$SQL = "INSERT INTO orcamento_solicitadocliente (fk_id_usuario,fk_id_profissional,trabalho_solicitado,data,visualizacaoProfissional) VALUES (?,?,?,?,?) ";
+$SQL = "INSERT INTO orcamento_solicitadocliente (fk_id_usuario,fk_id_profissional,trabalho_solicitado,data,visualizacaoProfissional,andamento) VALUES (?,?,?,?,?,?) ";
 $operacao = $conexao->prepare($SQL);
-$inserir = $operacao->execute(array($id_usuario,$fk_id_profissional,$trabalho_solicitado,$data,$$fk_id_profissional));
+$inserir = $operacao->execute(array($id_usuario,$id_perfil,$trabalho_solicitado,$data,$id_perfil,$andamento));
+
+
 ?>

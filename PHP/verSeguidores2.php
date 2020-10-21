@@ -5,14 +5,14 @@ header("Access-Control-Allow-Origin:*");
 // Incluir conexao
 include ("funcoes.php");
 
-$id_usuario = $_POST["id_usuario"];
+$id_perfil = $_POST["id_perfil"];
 
 $lista = "";
 $perfilPro = "";
 $sql = "SELECT * FROM usuarios_instagram
 INNER JOIN seguidores
 ON seguidores.fk_id_usuario = id_usuario
-WHERE seguindo=$id_usuario";
+WHERE seguindo=$id_perfil";
 $resultado = $conexao->query($sql);
 
 while($registro = mysqli_fetch_array($resultado)){
@@ -54,10 +54,11 @@ while($registro = mysqli_fetch_array($resultado)){
 
 $lista2 = "";
 $perfilPro2 = "";
+
 $sql2 = "SELECT * FROM usuarios_instagram
 INNER JOIN seguidores
 ON seguidores.seguindo = id_usuario
-WHERE fk_id_usuario=$id_usuario";
+WHERE fk_id_usuario=$id_perfil";
 $resultado2 = $conexao->query($sql2);
 
 while($registro2 = mysqli_fetch_array($resultado2)){
@@ -74,7 +75,7 @@ while($registro2 = mysqli_fetch_array($resultado2)){
 	}else{
 		$perfilPro2 = "<img src='img/diamond.png' class='imgDiamond2' />";
 	}
-
+	
     $lista2.="
         <li class='item-content'>
             <div class='item-title'>
@@ -97,12 +98,12 @@ while($registro2 = mysqli_fetch_array($resultado2)){
 
 }
 
-$sql3 = "SELECT * FROM usuarios_instagram WHERE id_usuario=$id_usuario";
+$sql3 = "SELECT * FROM usuarios_instagram WHERE id_usuario=$id_perfil";
 $resultado3 = $conexao->query($sql3);
 
 while($registro3 = mysqli_fetch_array($resultado3)){
     $nome = $registro3["nome"];
 }
 
-echo "$lista|$lista2|$nome|$sql2";
+echo "$lista|$lista2|$nome";
 ?>

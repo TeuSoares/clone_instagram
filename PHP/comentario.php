@@ -1,6 +1,7 @@
 <?php
 header("Content-type: application/json");
 header("Access-Control-Allow-Origin:*");
+date_default_timezone_set('America/Sao_Paulo');
 
 // Incluir conexao
 include ("conf/conexao.php");
@@ -16,6 +17,7 @@ WHERE comentario = '$comentario' and fk_id_publicacao = $id_public");
 $operacao->execute();
 $resultado = $operacao->rowCount();
 
+$mensagem = "";
 if($resultado > 0){
     $SQL = "INSERT INTO comentarios (fk_id_usuario,fk_id_publicacao,comentario,hora) VALUES ($id_usuario,$id_public,'$comentario.','$hora') ";
     $mensagem = "Comentário realizado com sucesso!!";
@@ -25,10 +27,10 @@ if($resultado > 0){
 }
 
 if($conexao->query($SQL)){
-    echo $SQL;
+    echo $mensagem;
 }else{
     //echo "Não foi possível realizar seu comentário. Tente novamente mais tarde!!";
-    echo $SQL;
+    echo $mensagem;
 }
 
 ?>

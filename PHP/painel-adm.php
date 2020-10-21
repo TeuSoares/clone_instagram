@@ -27,9 +27,9 @@ while($registro = mysqli_fetch_array($resultado)){
 
     $lista.="
         <li>
-			<div class='item-link item-content setSuporte'>
+			<div class='item-link item-content'>
 				<div class='item-media bg-black'>
-					<a href='/perfil2/' class='verComent' data='$id_usuario'>
+					<a href='/perfil2/' class='verComent setADM' data='$id_usuario'>
 						<div class='icon-chat'>
 							<img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagePerfil'>
 						</div>
@@ -37,7 +37,7 @@ while($registro = mysqli_fetch_array($resultado)){
 				</div>
 				<div class='item-inner bg-black'>
 					<div class='item-title'>
-						<a href='/perfil2/' class='verComent'>
+						<a href='/perfil2/' class='verComent setADM' data='$id_usuario'>
 							$nome
                         </a>
                         <em class='data-comentario'>$data_formatNova2</em>
@@ -70,9 +70,9 @@ while($registro2 = mysqli_fetch_array($resultado2)){
 
     $lista2.="
         <li>
-			<div class='item-link item-content setSuporte'>
+			<div class='item-link item-content'>
 				<div class='item-media bg-black'>
-					<a href='/perfil2/' class='verComent' data='$id_usuario'>
+					<a href='/perfil2/' class='verComent setADM' data='$id_usuario'>
 						<div class='icon-chat'>
 							<img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagePerfil'>
 						</div>
@@ -80,10 +80,10 @@ while($registro2 = mysqli_fetch_array($resultado2)){
 				</div>
 				<div class='item-inner bg-black'>
 					<div class='item-title'>
-						<a href='/perfil2/' class='verComent'>
+						<a href='/perfil2/' class='verComent setADM' data='$id_usuario'>
 							$nome
                         </a>
-                        <em class='data-comentario'>$data_format</em>
+                        <em class='data-comentario'>$data_formatNova</em>
                         <em class='data-comentario'>ID: $id_usuario</em>
 					</div>
 					<div class='item-text'>$problema</div>

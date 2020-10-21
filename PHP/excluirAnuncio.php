@@ -16,6 +16,5 @@ $image = $resultado['imagem'];
 unlink("../../mateus/php/uploads/".$image);
 
 $SQLdelete = $conexao->query("DELETE FROM publicacao_instagram WHERE id_publicInsta = $id_anuncio ");
-echo "Sucesso";
 
 ?>

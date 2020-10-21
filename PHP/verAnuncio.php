@@ -11,7 +11,7 @@ $lista = "";
 $data_format = "";
 $data_formatNova = "";
 
-$sql = "SELECT * FROM publicacao_instagram WHERE fk_id_usuario = $id_usuario  and tipoPublicacao = 'anuncio'";
+$sql = "SELECT * FROM publicacao_instagram WHERE fk_id_usuario = $id_usuario  and tipoPublicacao = 'anuncio' ORDER BY id_publicInsta DESC";
 $resultado = $conexao->query($sql);
 
 while($registro = mysqli_fetch_array($resultado)){
@@ -32,8 +32,8 @@ while($registro = mysqli_fetch_array($resultado)){
                 <div class='item-title-row'>
                     <div class='item-title'>$data_formatNova</div>
                     <div class='item-title'>
-                    <i class='f7-icons text-color-green' id='repostarAnuncio' data-confirm='$id_publicInsta'>checkmark_alt_circle_fill</i>
-                    <i class='f7-icons text-color-red' id='excluirAnuncio' data-excluir='$id_publicInsta'>xmark_circle_fill</i>
+                    <i class='f7-icons text-color-green repostarAnuncio' data-confirm='$id_publicInsta' onclick='repostarAnuncio();'>checkmark_alt_circle_fill</i>
+                    <i class='f7-icons text-color-red excluirAnuncio' data-excluir='$id_publicInsta' onclick='excluirAnuncio();'>xmark_circle_fill</i>
                     </div>
                 </div>
                 <div class='item-subtitle'>$descricao</div>

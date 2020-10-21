@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin:*");
 
 // Incluir conexao
-include ("funcoes2.php");
+include ("funcoes.php");
 
 $id_usuario = $_POST["id_usuario"];
 $imageChat = "";
@@ -13,7 +13,8 @@ $sql = "SELECT DISTINCT usuarios_instagram.nome,imagePerfil,chat.* FROM chat
 INNER JOIN usuarios_instagram
 ON chat.fk_id_perfil = id_usuario
 WHERE fk_id_usuario = $id_usuario
-GROUP BY nome"; 
+GROUP BY nome
+ORDER BY id_conversa DESC"; 
 $resultado = $conexao->query($sql);
 
 while($registro = mysqli_fetch_array($resultado)){
@@ -28,18 +29,20 @@ while($registro = mysqli_fetch_array($resultado)){
     $enviou = $registro["enviou"];
     $recebeu = $registro["recebeu"];
 
+	$horamensagem = date('H:i', strtotime($hora));
     $imageChat = "https://www.limeiraweb.com.br/mateus/php/uploads/$imagePerfil";
+	$conversa = substr($conversa, 0, 25);
 
-    $lista.="<li class='item-content'>
-                <a href='/chat/' class='text-color-black item-inner'>
+    $lista.="<li class='item-content bg-black'>
+                <a href='/chat/' class='item-inner setPerfil' data='$fk_id_perfil'>
                     <div class='item-title'>
                         <div class='display-flex'>
                             <div class='icon-chat'><img src='$imageChat'></div>&nbsp;&nbsp;
                             <div class='display-block  msg'>
-                                <div class='font-chat'>$nome</div>
+                                <div class='font-chat'><strong>$nome</strong></div>
                                 <div class='font-chat-msg display-flex'>
-                                    Ultimas Mensagens
-                                    - 5 min
+                                    $conversa...
+                                    - $horamensagem
                                 </div>
                             </div>
                         </div>
@@ -53,7 +56,8 @@ $sql2 = "SELECT DISTINCT usuarios_instagram.nome,imagePerfil,chat.* FROM chat
 INNER JOIN usuarios_instagram
 ON chat.fk_id_usuario = id_usuario
 WHERE fk_id_perfil = $id_usuario
-GROUP BY nome"; 
+GROUP BY nome
+ORDER BY id_conversa DESC"; 
 $resultado2 = $conexao->query($sql2);
 
 while($registro2 = mysqli_fetch_array($resultado2)){
@@ -68,18 +72,20 @@ while($registro2 = mysqli_fetch_array($resultado2)){
     $enviou = $registro2["enviou"];
     $recebeu = $registro2["recebeu"];
 
+    $horamensagem = date('H:i', strtotime($hora));
     $imageChat = "https://www.limeiraweb.com.br/mateus/php/uploads/$imagePerfil";
+	$conversa = substr($conversa, 0, 25);
 
-    $lista2.="<li class='item-content'>
-                <a href='/chat/' class='text-color-black item-inner'>
+    $lista2.="<li class='item-content bg-black'>
+                <a href='/chat/' class='item-inner setPerfil' data='$fk_id_usuario'>
                     <div class='item-title'>
                         <div class='display-flex'>
                             <div class='icon-chat'><img src='$imageChat'></div>&nbsp;&nbsp;
                             <div class='display-block  msg'>
-                                <div class='font-chat'>$nome</div>
+                                <div class='font-chat'><strong>$nome</strong></div>
                                 <div class='font-chat-msg display-flex'>
-                                    Ultimas Mensagens
-                                    - 5 min
+                                    $conversa...
+                                    - $horamensagem
                                 </div>
                             </div>
                         </div>

@@ -65,7 +65,7 @@ while($registro = mysqli_fetch_array($resultado)){
                 $orcamento
             </p>
         </div>
-        <div class='sheet-modal my-sheet-swipe-to-step' style='height:auto; --f7-sheet-bg-color: #fff;'>
+        <div class='sheet-modal my-sheet-swipe-to-step' style='height:auto;'>
             <div class='sheet-modal-inner'>
                 <div class='sheet-modal-swipe-step'>
                 <div class='list media-list'>
@@ -144,20 +144,18 @@ while($registro = mysqli_fetch_array($resultado)){
 
 }
 
-$fk_id_profissional2 = "";
-$fk_id_usuario2 = "";
+$situacao2 = "";
 $sql2 = "SELECT * FROM orcamento_solicitadocliente 
 INNER JOIN usuarios_instagram
 ON orcamento_solicitadocliente.fk_id_usuario = id_usuario
 INNER JOIN orcamento_realizado
 ON orcamento_realizado.fk_id_usuario = id_usuario
-WHERE id_orcamentoCliente = $id_trabalho and orcamento_realizado.fk_id_profissional = $id_usuario";
+WHERE id_orcamento = $id_trabalho and orcamento_realizado.situacao = 'Aguardando'";
 $resultado2 = $conexao->query($sql2);
 
 while($registro2 = mysqli_fetch_array($resultado2)){
-    $fk_id_profissional2 = $registro2["fk_id_profissional"];
-    $fk_id_usuario2 = $registro2["fk_id_usuario"];
+    $situacao2 = $registro2["situacao"];
 }
 
-echo "$lista|$fk_id_profissional2|$fk_id_usuario2";
+echo "$lista|$situacao2";
 ?>

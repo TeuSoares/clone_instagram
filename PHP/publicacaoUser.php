@@ -2,22 +2,26 @@
 header("Access-Control-Allow-Origin:*");
 
 // Incluir conexao
-include ("funcoes.php");
+include("funcoes.php");
 
 $id_public = $_POST["id_public"];
 
 $result = "";
 $sql = "SELECT
-publicacao_instagram.*,usuarios_instagram.*,
-COUNT(comentario) AS quantidade
+publicacao_instagram.*,usuarios_instagram.*,curtidas.curtida,curtidas.usuario_like,curtidas.fk_id_usuario as id_user_like,
+CONCAT(DAY(dataPublicacao), ' de ' ,ELT(MONTH(dataPublicacao), 'Janeiro', 'Fevereiro',
+'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 
+'Setembro', 'Outubro', 'Novembro', 'Dezembro'), ' de ', YEAR(dataPublicacao)) as dataFormat,
+COUNT(DISTINCT comentario) AS quantidade
 FROM publicacao_instagram 
 LEFT JOIN comentarios
 ON comentarios.fk_id_publicacao = id_publicInsta
 INNER JOIN usuarios_instagram
 ON publicacao_instagram.fk_id_usuario = id_usuario
-WHERE publicacao_instagram.id_publicInsta = 17
-GROUP BY id_publicInsta"; 
-$resultado = $conexao->query($sql);
+LEFT JOIN curtidas
+ON curtidas.fk_id_publicacao = id_publicInsta
+WHERE id_publicInsta = $id_public"; 
+$resultado = mysqli_query($conexao,$sql);
 
 while($registro = mysqli_fetch_array($resultado)){
 
@@ -28,11 +32,17 @@ while($registro = mysqli_fetch_array($resultado)){
     $descricao = $registro["descricao"];
     $fk_id_usuario = $registro["fk_id_usuario"];
     $imagePerfil = $registro["imagePerfil"];
-    $data = $registro["dataPublicacao"];
+    $data = $registro["dataFormat"];
+	$id_user_like = $registro["id_user_like"];
+	$usuario_like = $registro["usuario_like"];
+	$tipoPerfil = $registro["tipoPerfil"];
+	$curtida = $registro["curtida"];
+	
+	$result ="$nome|$quantidade|$image|$descricao|$fk_id_usuario|$imagePerfil|$data|$id_publicInsta|$id_user_like|$usuario_like|$curtida|$tipoPerfil";
 
-    $result ="$nome|$quantidade|$image|$descricao|$fk_id_usuario|$imagePerfil|$data|$id_publicInsta";
 
 }
-
+mysqli_close($conexao);
 echo $result;
+
 ?>

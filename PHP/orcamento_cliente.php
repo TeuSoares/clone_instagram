@@ -28,7 +28,6 @@ while($registro = mysqli_fetch_array($resultado)){
     $orcamentoCliente = $registro["id_orcamentoCliente"];
     $celular = $registro["celular"];
     $email = $registro["email"];
-    $situacao = $registro["situacao"];
     
     $data_format = explode('-', $data);
     $data_formatNova = $data_format[2].'/'.$data_format[1].'/'.$data_format[0];
@@ -38,9 +37,9 @@ while($registro = mysqli_fetch_array($resultado)){
             <div class='card-header'>
                 <div class='demo-facebook-avatar'><img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagePerfil' width='34' height='34'/></div>
                 <div class='demo-facebook-name'>
-                    $nome - $data_formatNova
+                    $nome 
                 </div>
-                <div class='demo-facebook-date'>Situação: <span class='situacaoOrcamento'>$situacao</span></div>
+                <div class='demo-facebook-date'>$data_formatNova</div>
                 
             </div>
             <div class='margin-top margin-right'>
@@ -53,7 +52,7 @@ while($registro = mysqli_fetch_array($resultado)){
                 $trabalho_solicitado
             </p>
         </div>
-        <div class='sheet-modal my-sheet-swipe-to-step' style='height:auto; --f7-sheet-bg-color: #fff;'>
+        <div class='sheet-modal my-sheet-swipe-to-step' style='height:auto;'>
             <div class='sheet-modal-inner'>
             <div class='sheet-modal-swipe-step'>
                 <div class='list media-list'>
@@ -97,7 +96,7 @@ INNER JOIN usuarios_instagram
 ON orcamento_solicitadocliente.fk_id_usuario = id_usuario
 INNER JOIN orcamento_realizado
 ON orcamento_realizado.fk_id_usuario = id_usuario
-WHERE id_orcamentoCliente = $id_trabalho and orcamento_realizado.fk_id_profissional = $id_usuario";
+WHERE id_orcamentoCliente = $id_trabalho and orcamento_realizado.fk_id_profissional = $id_usuario and id_trabalho = $id_trabalho";
 $resultado2 = $conexao->query($sql2);
 
 while($registro2 = mysqli_fetch_array($resultado2)){

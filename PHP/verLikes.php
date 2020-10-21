@@ -3,44 +3,53 @@
 header("Access-Control-Allow-Origin:*");
 
 // Incluir conexao
-include ("conf/conexao.php");
+include ("funcoes.php");
 
 $id_public = $_POST["id_public"];
 
 $lista = "";
 $number_likes = "";
 $verLikes = "";
+$perfilPro = "";
 
-$sql = "SELECT publicacao_instagram.id_publicInsta,usuarios_instagram.nome,curtidas.curtida,usuarios_instagram.apelido 
+$sql = "SELECT publicacao_instagram.id_publicInsta,usuarios_instagram.tipoPerfil,usuarios_instagram.nome,curtidas.curtida,usuarios_instagram.nomeUser,usuarios_instagram.imagePerfil,usuarios_instagram.id_usuario 
 FROM publicacao_instagram
 INNER JOIN curtidas
 ON curtidas.fk_id_publicacao = id_publicInsta
 INNER JOIN usuarios_instagram
 ON curtidas.fk_id_usuario = id_usuario
-WHERE id_publicInsta=10";
+WHERE id_publicInsta=$id_public";
 $resultado = $conexao->query($sql);
 
 while($registro = mysqli_fetch_array($resultado)){
-    $apelido = $registro["apelido"];
+    $apelido = $registro["nomeUser"];
     $nome = $registro["nome"];
     $likes = $registro["curtida"];
-
-    $number_likes = (2 + $likes);
+	$imagePerfil = $registro["imagePerfil"];
+	$id_usuario = $registro["id_usuario"];
+	$tipoPerfil = $registro["tipoPerfil"];
+	
+	if($tipoPerfil == "pessoal"){
+		$perfilPro = "";
+	}else if($tipoPerfil == "adm"){
+		$perfilPro = "<img src='img/tuxedo.png' class='imgDiamond2' />";
+	}else{
+		$perfilPro = "<img src='img/diamond.png' class='imgDiamond2' />";
+	}
 
     $lista.="
         <li class='item-content'>
             <div class='item-title'>
-                <div class='display-flex justify-content-space-between'>
-                <a href='/perfil/' class='text-color-black item-inner tab-link'>
-                    <div class='icon-chat'><img src='img/icon-chat.png'></div>
+                <div class='display-flex justify-content-space-between bg-black'>
+                <a href='/perfil2/' class='item-inner tab-link' data='$id_usuario'>
+                    <div class='icon-chat'><img src='https://www.limeiraweb.com.br/mateus/php/uploads/$imagePerfil'></div>
                     <div class='display-block  msg margin-left'>
-                        <div class='font-chat'>$nome</div>
+                        <div class='font-chat'>$nome&nbsp;$perfilPro</div>
                         <div class='font-chat-msg'>
                             <div class='userName'>$apelido</div>
                         </div>
                     </div>
                 </a>
-                <div><button class='button button-small button-fill seguir' id='seguir'>SEGUIR</button></div>
                 
                 </div>
             </div>
@@ -49,12 +58,9 @@ while($registro = mysqli_fetch_array($resultado)){
 
 }
 
-$sql2 = $conexao->query("SELECT COUNT(curtida) FROM curtidas WHERE fk_id_publicacao = 10");
+$sql2 = $conexao->query("SELECT COUNT(curtida) FROM curtidas WHERE fk_id_publicacao = $id_public");
 
- $row = $sql2->fetch_row();
- $count = 2 + $row[0];
+$row = $sql2->fetch_row();
+$count = 0 + $row[0];
 
- echo $count;
-
-
-?>
+echo "$lista|$count";

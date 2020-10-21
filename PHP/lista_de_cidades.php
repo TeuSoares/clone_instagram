@@ -1,7 +1,8 @@
 <?php
+// $lista = "Santa Gertrudes,Limeira,Americana,São Paulo,Curitiba,Conchal,Piracicaba";
 header("Access-Control-Allow-Origin:*");
-include("funcoes.php");
 
+include("funcoes.php");
 $lista = "";
 $sql = "SELECT cidade,uf FROM cidades";
 $resultado = $conexao->query($sql);
