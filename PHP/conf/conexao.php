@@ -1,15 +1,10 @@
 <?php
 
 function  con_mysql(){
-    // $servidor = "Localhost";
-    // $banco = "db_food";
-    // $usuario = "root";
-    // $senha = "";
-
-    $servidor = "robb0466.publiccloud.com.br:3306";
-    $banco = "limeiraweb_mateus";
-    $usuario = "limei_mateus";
-    $senha = "@a1b2c3d4#";
+    $servidor = "Localhost";
+    $banco = "instagram";
+    $usuario = "root";
+    $senha = "";
 
     try{
         $con = new PDO("mysql:host=$servidor;dbname=$banco",
