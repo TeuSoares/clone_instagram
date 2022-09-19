@@ -470,7 +470,7 @@ function pageLogin(){
         // Requisição AJAX
         app.request({
           // url:"php/login.php",
-          url:"https://www.limeiraweb.com.br/mateus/php/login_instagram.php",
+          url:"php/login_instagram.php",
           type:"POST",
           dataType:"json",
           data:$("#Formlogin").serialize(),
@@ -558,7 +558,7 @@ function pageCadastro(){
       app.dialog.preloader('Aguarde...');
       // INSERT
       //app.request.post('php/insert_login.php',{
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/insert_login_instagram.php',{
+      app.request.post('php/insert_login_instagram.php',{
         nome:nome_c,
         email:email_c,
         senha:senha_c,
@@ -644,7 +644,7 @@ function publicacoes(){
         var dados = "";
         app.request({
           // url:"php/publicacao.php",
-          url:"https://www.limeiraweb.com.br/mateus/php/publicacao_instagram.php",
+          url:"php/publicacao_instagram.php",
           type:"POST",
           dataType:"json",
           data: {id_usuario:idUsuario},
@@ -784,7 +784,7 @@ function publicacaoUser(){
   var idUsuario = localStorage.getItem('id_usuario');
   var dados = "";
 
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/publicacaoUser.php",{
+    app.request.post("php/publicacaoUser.php",{
       id_public:v_publicacao,
     },function(resposta){
       resultado = (resposta).split('|');
@@ -833,7 +833,7 @@ function publicacaoUser(){
           id = resultado[7];
 
           dados+='<div class="width-img">'; 
-            dados+='<img src="https://www.limeiraweb.com.br/mateus/php/uploads/'+resultado[2]+'" width="100%"/>';
+            dados+='<img src="php/uploads/'+resultado[2]+'" width="100%"/>';
             dados+='<div id="heart">';
               dados+='<img class="bottom display-none" src="img/heart.png" width="100px">';
             dados+='</div>';
@@ -911,7 +911,7 @@ function excluir(){
 
     app.dialog.confirm("Deseja remover essa publicação?","",function(){
       app.dialog.preloader('Excluindo...');
-      app.request.post("https://www.limeiraweb.com.br/mateus/php/excluir_instagram.php",{
+      app.request.post("php/excluir_instagram.php",{
         id_public:idPUEXL,
       },function(resposta){
         setTimeout(function () {
@@ -934,7 +934,7 @@ function excluir2(){
 
     app.dialog.confirm("Deseja remover essa publicação?","",function(){
       app.dialog.preloader('Excluindo...');
-      app.request.post("https://www.limeiraweb.com.br/mateus/php/excluir_instagram.php",{
+      app.request.post("php/excluir_instagram.php",{
         id_public:idPUEXL,
       },function(resposta){
         setTimeout(function () {
@@ -965,7 +965,7 @@ function confirmLegenda(){
   
     var editarL = $("#valuelegenda").val();
   
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/editar_legenda_instagram.php",{
+    app.request.post("php/editar_legenda_instagram.php",{
       valuelegenda:editarL,
       id_public:v_public2,
     },function(resposta){
@@ -1000,7 +1000,7 @@ function pesquisa_perfil(){
     online();
     perfilUsuario();
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/pesquisa_perfil.php', {}, function(resposta){
+  app.request.post('php/pesquisa_perfil.php', {}, function(resposta){
       $("#verPerfil3").html(resposta);  
 
       closePreLoader();
@@ -1034,7 +1034,7 @@ function insertSeguidores(){
     var v_perfil = localStorage.getItem('id_perfil');
     // app.dialog.alert(v_perfil);
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/insert_seguidores.php',{
+    app.request.post('php/insert_seguidores.php',{
     id_usuario:v_id,
     id_perfil:v_perfil,
     },
@@ -1063,7 +1063,7 @@ function verLikes(){
     var v_public = localStorage.getItem('id_public');
     // alert(v_public);
   
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verLikes.php', {id_public:v_public}, function(resposta){
+    app.request.post('php/verLikes.php', {id_public:v_public}, function(resposta){
       dados = (resposta).split('|');  // Divide a string baseada em um caracter
         $("#curtidas").html(dados[0]); 
         $("#likesTotal").html(dados[1]);  
@@ -1112,7 +1112,7 @@ function curtida(id){
 
 //  alert(v_user+" | "+v_public);
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/curtida.php', {id_usuario:v_user,id_public:v_public,user_insta:v_userInsta}, function(resposta){
+  app.request.post('php/curtida.php', {id_usuario:v_user,id_public:v_public,user_insta:v_userInsta}, function(resposta){
     localStorage.removeItem('id_public',id);
     
     publicacoes();
@@ -1141,7 +1141,7 @@ function insertComentario(){
       return false;
     }
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/comentario.php', {id_usuario:v_user,id_public:v_public,comentario:vComentario}, function(resposta){
+    app.request.post('php/comentario.php', {id_usuario:v_user,id_public:v_public,comentario:vComentario}, function(resposta){
 
       setTimeout(function () {
         app.dialog.close();
@@ -1161,7 +1161,7 @@ function comentario(){
     var v_public = localStorage.getItem('id_public');
     var v_id = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verComentario.php', {id_public:v_public,id_usuario:v_id}, function(resposta){
+    app.request.post('php/verComentario.php', {id_public:v_public,id_usuario:v_id}, function(resposta){
       $("#verComentario").html(resposta);  
       closePreLoader();
 
@@ -1204,7 +1204,7 @@ function comentario(){
         $(".navbar-edit-comentario").removeClass("display-none");
         $(".public-coment").addClass("display-none");
 
-        app.request.post("https://www.limeiraweb.com.br/mateus/php/recuperarComentario.php",{
+        app.request.post("php/recuperarComentario.php",{
           id_comentario:v_comentario,
           id_usuario:v_id2,
         },function(resposta){
@@ -1250,7 +1250,7 @@ function editarComentario(){
   var v_comentario = localStorage.getItem('comentario');
   var v_id2 = localStorage.getItem('id_usuario');
 
-  app.request.post("https://www.limeiraweb.com.br/mateus/php/editar_comentario_instagram.php",{
+  app.request.post("php/editar_comentario_instagram.php",{
     id_comentario:v_comentario,
     id_usuario:v_id2,
     comentario:vComentario
@@ -1278,7 +1278,7 @@ function excluirComentario(){
   var v_id2 = localStorage.getItem('id_usuario');
   app.dialog.confirm("Deseja remover esse comentário?","AVISO",function(){
     app.dialog.preloader('Excluindo...');
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/excluir_comentario.php",{
+    app.request.post("php/excluir_comentario.php",{
       id_comentario:v_comentario,
       id_usuario:v_id2,
     },function(resposta){
@@ -1389,7 +1389,7 @@ function pagePublicar(){
     options.chunkedMode = false;
 
     var ft = new FileTransfer();
-    ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insert_public.php"),function(){
+    ft.upload(fotoPublic,encodeURI("php/insert_public.php"),function(){
 
       setTimeout(function () {
         app.dialog.alert("Publicação realizada com sucesso!!","");
@@ -1415,7 +1415,7 @@ function pagePerfil(){
     $(".painel-adm").hide();
     online();
     perfilUsuario();
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/usuarios_cadastrador.php',{},
+    app.request.post('php/usuarios_cadastrador.php',{},
     function(resposta){
       $("#usuarios_cadastrados").html(resposta);
     });
@@ -1423,7 +1423,7 @@ function pagePerfil(){
     var v_perfil = localStorage.getItem('id_perfil');
     var v_id = localStorage.getItem('id_usuario');
   
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verPerfil_projeto.php',{
+    app.request.post('php/verPerfil_projeto.php',{
       id_usuario:v_id,
       },
       function(resposta){
@@ -1531,7 +1531,7 @@ function pagePerfil2(){
   var v_perfil = localStorage.getItem('id_perfil');
   var v_id = localStorage.getItem('id_usuario');
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/verPerfil_projeto2.php',{
+  app.request.post('php/verPerfil_projeto2.php',{
     id_perfil:v_perfil,
     id_usuario:v_id,
     },
@@ -1658,7 +1658,7 @@ function pagePerfil2(){
 
 function verSeguidores(){
   var v_id2 = localStorage.getItem('id_usuario');
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/verSeguidores.php',{
+  app.request.post('php/verSeguidores.php',{
       id_usuario:v_id2,
       },
       function(resposta){
@@ -1671,7 +1671,7 @@ function verSeguidores(){
     $(".button-noturno").css("z-index","300");
     var v_id = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verSeguidores.php',{
+    app.request.post('php/verSeguidores.php',{
       id_usuario:v_id,
       },
       function(resposta){
@@ -1694,7 +1694,7 @@ function verSeguidores(){
     $(".preload").removeClass("display-none");
     $(".button-noturno").css("z-index","300");
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verSeguidores2.php',{
+    app.request.post('php/verSeguidores2.php',{
       id_perfil:v_perfil,
       },
       function(resposta){
@@ -1716,7 +1716,7 @@ function verSeguidores(){
 function verSeguidores2(){
 
   var v_perfil = localStorage.getItem('id_perfil');
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/verSeguidores2.php',{
+  app.request.post('php/verSeguidores2.php',{
       id_perfil:v_perfil,
       },
       function(resposta){
@@ -1729,7 +1729,7 @@ function verSeguidores2(){
     $(".preload").removeClass("display-none");
     $(".button-noturno").css("z-index","300");
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verSeguidores2.php',{
+    app.request.post('php/verSeguidores2.php',{
       id_perfil:v_perfil,
       },
       function(resposta){
@@ -1752,7 +1752,7 @@ function verSeguidores2(){
     $(".preload").removeClass("display-none");
     $(".button-noturno").css("z-index","300");
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verSeguidores2.php',{
+    app.request.post('php/verSeguidores2.php',{
       id_perfil:v_perfil,
       },
       function(resposta){
@@ -1779,7 +1779,7 @@ function pageUpdate(){
 
       var v_id = localStorage.getItem('id_usuario');
     
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/perfilUser.php', {id_usuario: v_id}, function(resposta){
+      app.request.post('php/perfilUser.php', {id_usuario: v_id}, function(resposta){
         dados = (resposta).split('|');
         closePreLoader();
         $("#nome").val(dados[0]); 
@@ -1883,7 +1883,7 @@ function pageUpdate(){
 
       // alert(telefone_u+"<br>"+numero2+"<br>"+item2)
 
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/update_perfil_profissional.php', {id_usuario:v_id,telefone_u:telefone,cidade_autocomplete:item2,rv:rv2,bairro:bairro2,site:site2,numero_casa:numero2}, function(resposta){
+      app.request.post('php/update_perfil_profissional.php', {id_usuario:v_id,telefone_u:telefone,cidade_autocomplete:item2,rv:rv2,bairro:bairro2,site:site2,numero_casa:numero2}, function(resposta){
         // $("#verSql").html(resposta);
       });  
 
@@ -1926,7 +1926,7 @@ function pageUpdate(){
       var v_email = localStorage.getItem('email_instagram');
 
       if(nome_c != v_nameuser || email_c != v_email){
-        app.request.post('https://www.limeiraweb.com.br/mateus/php/verificar_update.php',{
+        app.request.post('php/verificar_update.php',{
           nome:nome_c,
           email:email_c,
           usuario:v_nameuser,
@@ -1969,7 +1969,7 @@ function pageUpdate(){
             options.chunkedMode = false;
     
             var ft = new FileTransfer();
-            ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insere_perfil.php"),function(){
+            ft.upload(fotoPublic,encodeURI("php/insere_perfil.php"),function(){
 
               setTimeout(function () {
                 app.dialog.alert("Alteração realizada com sucesso!!","");
@@ -2010,7 +2010,7 @@ function pageUpdate(){
         options.chunkedMode = false;
 
         var ft = new FileTransfer();
-        ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insere_perfil.php"),function(){
+        ft.upload(fotoPublic,encodeURI("php/insere_perfil.php"),function(){
           setTimeout(function () {
             app.dialog.alert("Alteração realizada com sucesso!!","");
             app.dialog.close();
@@ -2040,7 +2040,7 @@ function pageUpdate(){
     });
 
     var listaCidades = "";
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/lista_de_cidades_projeto.php', { }, function (resposta) {
+    app.request.post('php/lista_de_cidades_projeto.php', { }, function (resposta) {
         listaCidades = (resposta).split(',');
     })
     
@@ -2075,7 +2075,7 @@ function chat(){
     var v_perfil = localStorage.getItem('id_perfil');
     var dados = "";
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/perfil-conversa.php', {id_perfil:v_perfil}, function(resposta){
+    app.request.post('php/perfil-conversa.php', {id_perfil:v_perfil}, function(resposta){
       dados1 = (resposta).split("|");
     
       $(".user-chat").html(dados1[0]);
@@ -2102,7 +2102,7 @@ function chat(){
           }else{
             dados+='<div class="message message-sent">';
           }
-            dados+='<div class="message-avatar" style="background-image:url(https://www.limeiraweb.com.br/mateus/php/uploads/'+resultado[i].imagePerfil+');"></div>';
+            dados+='<div class="message-avatar" style="background-image:url(php/uploads/'+resultado[i].imagePerfil+');"></div>';
             dados+='<div class="message-content">';
               dados+='<div class="message-name">'+resultado[i].nome+'</div>';
               dados+='<div class="message-header">'+resultado[i].dataFormat+'</div>';
@@ -2142,7 +2142,7 @@ function inserirConversa(){
 
       app.dialog.preloader('Aguarde...');
     
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/enviar-conversa.php', {id_usuario:v_id,id_perfil:v_perfil,conversa:v_conversa}, function(resposta){
+      app.request.post('php/enviar-conversa.php', {id_usuario:v_id,id_perfil:v_perfil,conversa:v_conversa}, function(resposta){
     
         $(".resizable").val("");
         app.dialog.close();
@@ -2160,7 +2160,7 @@ function conversas_recentes(){
 
     var v_id = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/conversas-recentes.php', {id_usuario:v_id}, function(resposta){
+    app.request.post('php/conversas-recentes.php', {id_usuario:v_id}, function(resposta){
       dados = (resposta).split("|");
     
       $(".conversas-recentes").html(dados[3]);
@@ -2189,7 +2189,7 @@ function enviadas(){
 
     var v_id = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/conversas-recentes.php', {id_usuario:v_id}, function(resposta){
+    app.request.post('php/conversas-recentes.php', {id_usuario:v_id}, function(resposta){
       dados = (resposta).split("|");
     
       $(".enviadas").html(dados[0]);
@@ -2215,7 +2215,7 @@ function categoria(){
   $(document).ready(function(){
     var v_id = localStorage.getItem("id_usuario");
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verPerfil_projeto.php',{
+    app.request.post('php/verPerfil_projeto.php',{
       id_usuario:v_id,
       },
       function(resposta){
@@ -2236,7 +2236,7 @@ function categoria(){
       searchIn: '.item-title',
     }); // Fim searchbar
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/lista_de_categorias.php', {}, function(resposta){
+    app.request.post('php/lista_de_categorias.php', {}, function(resposta){
     dados = (resposta).split("|");
       $("#list_categorias").html(dados[0]);
       closePreLoader();
@@ -2260,7 +2260,7 @@ function categoria(){
         app.dialog.preloader('Aguarde...');
       }
 
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/insert_categoria.php', {id_usuario:fk_id_usuario,categoria:categ}, function(resposta){
+      app.request.post('php/insert_categoria.php', {id_usuario:fk_id_usuario,categoria:categ}, function(resposta){
     
         setTimeout(function(){
           app.dialog.alert("Perfil profissional ativado!! <br> Agora você terá acesso a todos os recursos disponíveis, para gerenciar o seu negócio.","AVISO");
@@ -2292,7 +2292,7 @@ function insertFeedback(){
       return false;
     }
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirFeedback.php', {id_usuario:v_user,id_perfil:v_perfil,feedback:vComentario}, function(resposta){
+    app.request.post('php/inserirFeedback.php', {id_usuario:v_user,id_perfil:v_perfil,feedback:vComentario}, function(resposta){
 
       setTimeout(function () {
         app.dialog.close();
@@ -2311,7 +2311,7 @@ function verFeedback(){
   $(document).ready(function(){
     var v_perfil = localStorage.getItem('id_perfil');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verFeedback.php', {id_perfil:v_perfil}, function(resposta){
+    app.request.post('php/verFeedback.php', {id_perfil:v_perfil}, function(resposta){
       $("#verFeedback").html(resposta);  
       escuroON();
       closePreLoader();
@@ -2329,7 +2329,7 @@ function avaliacao(){
     var v_perfil = localStorage.getItem('id_perfil');
     var v_user = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/feedback.php', {id_perfil:v_perfil,id_usuario:v_user}, function(resposta){
+    app.request.post('php/feedback.php', {id_perfil:v_perfil,id_usuario:v_user}, function(resposta){
       dados = (resposta).split("|");
       closePreLoader();
 
@@ -2661,7 +2661,7 @@ function setStar1(){
   var v_perfil = localStorage.getItem('id_perfil');
   var v_user = localStorage.getItem('id_usuario');
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+  app.request.post('php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
     app.dialog.alert("Obrigado pelo seu Feedback",""); 
     app.dialog.close();
     localStorage.removeItem("estrelas");
@@ -2676,7 +2676,7 @@ function setStar2(){
   var v_perfil = localStorage.getItem('id_perfil');
   var v_user = localStorage.getItem('id_usuario');
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+  app.request.post('php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
     app.dialog.alert("Obrigado pelo seu Feedback",""); 
     app.dialog.close();
     localStorage.removeItem("estrelas");
@@ -2690,7 +2690,7 @@ function setStar3(){
   var v_perfil = localStorage.getItem('id_perfil');
   var v_user = localStorage.getItem('id_usuario');
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+  app.request.post('php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
     app.dialog.alert("Obrigado pelo seu Feedback",""); 
     app.dialog.close();
     localStorage.removeItem("estrelas");
@@ -2704,7 +2704,7 @@ function setStar4(){
   var v_perfil = localStorage.getItem('id_perfil');
   var v_user = localStorage.getItem('id_usuario');
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+  app.request.post('php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
     app.dialog.alert("Obrigado pelo seu Feedback",""); 
     app.dialog.close();
     localStorage.removeItem("estrelas");
@@ -2718,7 +2718,7 @@ function setStar5(){
   var v_perfil = localStorage.getItem('id_perfil');
   var v_user = localStorage.getItem('id_usuario');
 
-  app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
+  app.request.post('php/inserirAvaliacao.php', {id_perfil:v_perfil,id_usuario:v_user,estrelas:star}, function(resposta){
     app.dialog.alert("Obrigado pelo seu Feedback",""); 
     app.dialog.close();
     localStorage.removeItem("estrelas");
@@ -2731,7 +2731,7 @@ function inserirVisitantes(){
     var v_perfil = localStorage.getItem('id_perfil');
     var v_user = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/inserirVisitantes.php', {id_perfil:v_perfil,id_usuario:v_user}, function(resposta){ }); 
+    app.request.post('php/inserirVisitantes.php', {id_perfil:v_perfil,id_usuario:v_user}, function(resposta){ }); 
 
   });
 }
@@ -2740,7 +2740,7 @@ function verAtividades(){
   $(document).ready(function(){
     var v_user = localStorage.getItem('id_usuario');
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verAtividades.php', {id_usuario:v_user}, function(resposta){ 
+    app.request.post('php/verAtividades.php', {id_usuario:v_user}, function(resposta){ 
       dados = (resposta).split("|");
       closePreLoader();
 
@@ -2810,7 +2810,7 @@ function suporte(){
       var vSuporte = $("#suporte").val();
       app.dialog.preloader('Enviando...');
 
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/suporte.php', {id_usuario:v_id,suporte:vSuporte}, function(resposta){ 
+      app.request.post('php/suporte.php', {id_usuario:v_id,suporte:vSuporte}, function(resposta){ 
 
         setTimeout(function(){
           app.dialog.alert("Recebemos seu pedido de suporte, iremos avisar quando seu problema for resolvido ou entraremos em contato","AVISO");
@@ -2833,7 +2833,7 @@ function bug(){
       var vBug = $("#bug").val();
       app.dialog.preloader('Enviando...');
 
-      app.request.post('https://www.limeiraweb.com.br/mateus/php/bug.php', {id_usuario:v_id,bug:vBug}, function(resposta){ 
+      app.request.post('php/bug.php', {id_usuario:v_id,bug:vBug}, function(resposta){ 
 
         setTimeout(function(){
           app.dialog.alert("Obrigado pelo seu reporte","AVISO");
@@ -2851,7 +2851,7 @@ function bug(){
 function painelADM(){
   var id_adm = localStorage.getItem("id_usuario");
   $(document).ready(function(){
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/painel-adm.php', { }, function(resposta){ 
+    app.request.post('php/painel-adm.php', { }, function(resposta){ 
       dados = (resposta).split("|");
       closePreLoader();
 
@@ -2939,7 +2939,7 @@ function pagePublicarAnuncio(){
 
     var idUusuario = localStorage.getItem("id_usuario");
 
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verificar_anuncio.php', {id_usuario:idUusuario}, function(resposta){ 
+    app.request.post('php/verificar_anuncio.php', {id_usuario:idUusuario}, function(resposta){ 
       dados = (resposta).split("|");
       
       if(dados[0] !=""){
@@ -2973,7 +2973,7 @@ function pagePublicarAnuncio(){
         options.chunkedMode = false;
     
         var ft = new FileTransfer();
-        ft.upload(fotoPublic,encodeURI("https://www.limeiraweb.com.br/mateus/php/insert_public_anuncio.php"),function(){
+        ft.upload(fotoPublic,encodeURI("php/insert_public_anuncio.php"),function(){
     
           setTimeout(function () {
             app.dialog.alert("Anúncio publicado com sucesso!!","");
@@ -2999,7 +2999,7 @@ function pagePublicarAnuncio(){
 function verAnuncio(){
   $(document).ready(function(){
     var v_id = localStorage.getItem("id_usuario");
-    app.request.post('https://www.limeiraweb.com.br/mateus/php/verAnuncio.php', {id_usuario:v_id}, function(resposta){ 
+    app.request.post('php/verAnuncio.php', {id_usuario:v_id}, function(resposta){ 
       
       $("#resultAnuncio").html(resposta);
 
@@ -3030,7 +3030,7 @@ function excluirAnuncio(){
 
     app.dialog.confirm("Deseja remover esse anúncio?","",function(){
       app.dialog.preloader('Excluindo...');
-      app.request.post("https://www.limeiraweb.com.br/mateus/php/excluirAnuncio.php",{
+      app.request.post("php/excluirAnuncio.php",{
         id_anuncio:idAnuncio,
       },function(resposta){
           app.dialog.close();
@@ -3048,7 +3048,7 @@ function repostarAnuncio(){
     var idAnuncio = localStorage.getItem('id_anuncio');
 
     app.dialog.preloader('Repostando...');
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/repostarAnuncio.php",{
+    app.request.post("php/repostarAnuncio.php",{
       id_anuncio:idAnuncio,
     },function(resposta){
         
@@ -3071,7 +3071,7 @@ function orcamento_solicitado(){
       var v_trabalho = $("#orçamento").val();
   
       app.dialog.preloader('Enviando...');
-      app.request.post("https://www.limeiraweb.com.br/mateus/php/insert_orcamento_cliente.php",{
+      app.request.post("php/insert_orcamento_cliente.php",{
         id_usuario:v_id,id_perfil:idPRO,trabalho_solicitado:v_trabalho,
       },function(resposta){
           
@@ -3092,7 +3092,7 @@ function verOrcamentosRealizar(){
   $(document).ready(function(){
     var id = localStorage.getItem('id_usuario');
 
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/verOrcamento_realizar.php",{
+    app.request.post("php/verOrcamento_realizar.php",{
       id_usuario:id,
     },function(resposta){
       closePreLoader();
@@ -3127,7 +3127,7 @@ function resultOrcamentoCliente(){
     var idTrabalho = localStorage.getItem('id_trabalho');
     var v_id = localStorage.getItem('id_usuario');
 
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/orcamento_cliente.php",{
+    app.request.post("php/orcamento_cliente.php",{
       id_trabalho:idTrabalho,id_usuario:v_id
     },function(resposta){
       dados = (resposta).split("|");
@@ -3156,7 +3156,7 @@ function resposta_orcamento(){
       var v_orcamento = $("#resposta_orcamento").val();
   
       app.dialog.preloader('Enviando...');
-      app.request.post("https://www.limeiraweb.com.br/mateus/php/insert_resposta_cliente.php",{
+      app.request.post("php/insert_resposta_cliente.php",{
         id_usuario:v_id,id_perfil:idPRO,resposta_orcamento:v_orcamento,id_trabalho:idTrabalho
       },function(resposta){
           
@@ -3179,7 +3179,7 @@ function verRespostaProfissional(){
   $(document).ready(function(){
     var id = localStorage.getItem('id_usuario');
 
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/verOrcamentos_solicitados.php",{
+    app.request.post("php/verOrcamentos_solicitados.php",{
       id_usuario:id,
     },function(resposta){
       closePreLoader();
@@ -3211,7 +3211,7 @@ function solicitacao_orcamento(){
     var idTrabalho = localStorage.getItem('id_trabalho');
     var v_id = localStorage.getItem('id_usuario');
 
-    app.request.post("https://www.limeiraweb.com.br/mateus/php/solicitacao-orcamento.php",{
+    app.request.post("php/solicitacao-orcamento.php",{
       id_trabalho:idTrabalho,id_usuario:v_id
     },function(resposta){
       dados = (resposta).split("|");
@@ -3233,7 +3233,7 @@ function solicitacao_orcamento(){
       var idTrabalho = localStorage.getItem('id_trabalho');
       app.dialog.confirm("Deseja recusar esse orçamento?","",function(){
         app.dialog.preloader('Aguarde...');
-        app.request.post("https://www.limeiraweb.com.br/mateus/php/recusarOrcamento.php",{
+        app.request.post("php/recusarOrcamento.php",{
           id_trabalho:idTrabalho,
         },function(resposta){
             app.dialog.close();
@@ -3250,7 +3250,7 @@ function solicitacao_orcamento(){
     $("#interesse_pro").on("click", function(){
       var idTrabalho = localStorage.getItem('id_trabalho');
       app.dialog.preloader('Aguarde...');
-      app.request.post("https://www.limeiraweb.com.br/mateus/php/interesseOrcamento.php",{
+      app.request.post("php/interesseOrcamento.php",{
         id_trabalho:idTrabalho,
       },function(resposta){
           app.dialog.close();
