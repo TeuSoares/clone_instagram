@@ -2,7 +2,8 @@
 
 Esse é um projeto de finalização do curso técnico, realizado no Senac de Limeira 2019 / 2019. O projeto consiste em um aplicativo para Android, o projeto foi inspirado no instagram, adicionei algumas funcionalidades já existem no aplicativo original, mas também adicionei funcionalidades novas.
 
-## Vídeo de apresentação do projeto (Clique na imagem para acessar)
+## Vídeo de apresentação do projeto 
+*Clique na imagem para acessar* 👇
 
 [![Clone do Instagram](https://img.youtube.com/vi/YEJEI6o2FYk/0.jpg)](https://www.youtube.com/watch?v=YEJEI6o2FYk)
 
