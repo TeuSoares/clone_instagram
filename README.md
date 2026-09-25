@@ -1,39 +1,41 @@
-# Projeto Integrador - Clone do Instagram
+# Integrative Project - Instagram Clone
 
-Esse é um projeto de finalização do curso técnico, realizado no Senac de Limeira 2019 / 2020. O projeto consiste em um aplicativo para Android, o projeto foi inspirado no instagram, adicionei algumas funcionalidades já existem no aplicativo original, mas também adicionei funcionalidades novas.
+This is a final project developed as part of a technical course at Senac Limeira in 2019 / 2020. The project is an Android application inspired by Instagram. I added some features that already exist in the original app, as well as new features.
 
-## Vídeo de apresentação do projeto 
-*Clique na imagem para acessar* 👇
+## Project Presentation Video
 
-[![Clone do Instagram](https://img.youtube.com/vi/YEJEI6o2FYk/0.jpg)](https://www.youtube.com/watch?v=YEJEI6o2FYk)
+*Click the image to watch* 👇
 
-## Tecnologias
+[![Instagram Clone](https://img.youtube.com/vi/YEJEI6o2FYk/0.jpg)](https://www.youtube.com/watch?v=YEJEI6o2FYk)
+
+## Technologies
 
 * Apache Cordova
 * JQuery
 * Framework 7
 * PHP
-* Banco de dados (MySql)
+* Database (MySQL)
 
-## Funcionalidades
-* [x] Cadastrar e autenticar usuário
-* [x] Fazer publicações
-* [x] Seguir outros usuários
-* [x] Enviar mensagens
-* [x] Curtir e fazer comentários nas postagens
-* [x] Favoritar perfis
-* [x] Mudar para conta profissional
-* [x] Enviar orçamentos
-* [x] Editar perfil
+## Features
 
-## Autor
+* [x] User registration and authentication
+* [x] Create posts
+* [x] Follow other users
+* [x] Send messages
+* [x] Like and comment on posts
+* [x] Favorite profiles
+* [x] Switch to a professional account
+* [x] Send quotes
+* [x] Edit profile
 
-* **Mateus Soares** [Linkedin](https://www.linkedin.com/in/mateus-soares-santos/)
+## Author
 
-## Versão
+* **Mateus Soares** [LinkedIn](https://www.linkedin.com/in/mateus-soares-santos/)
+
+## Version
 
 7.7.4
 
-## Licença
+## License
 
-Este projeto está licenciado sob a Licença MIT.
+This project is licensed under the MIT License.
